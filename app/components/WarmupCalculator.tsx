@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import PaymentPage from "./PaymentPage";
 
 // -----------------------------
 // Types
@@ -85,6 +86,11 @@ function computeWarmups({
 export default function WarmupCalculatorGuided() {
   const cardRef = useRef<HTMLDivElement>(null);
 
+  const MAX_FREE_TOKENS = 3;
+
+  const [tokensUsed, setTokensUsed] = useState(0);
+  const [goToPayment, setGoToPayment] = useState(false);
+
   const [step, setStep] = useState(0); // 0 = lift, 1 = 1RM, 2 = plates, 3 = intensity, 4 = work sets, 5 = generated
   const [lift, setLift] = useState<Lift>();
   const [oneRMs, setOneRMs] = useState<Record<Lift, number>>({ squat: 0, bench: 0, deadlift: 0 });
@@ -109,6 +115,10 @@ export default function WarmupCalculatorGuided() {
   }, [step]);
 
   function nextStep() {
+    if (tokensUsed >= MAX_FREE_TOKENS) {
+      setGoToPayment(true);
+      return;
+    }
     if (step === 4) generateWarmup();
     else setStep(step + 1);
   }
@@ -124,11 +134,22 @@ export default function WarmupCalculatorGuided() {
     const sets = computeWarmups({ targetWeightKg, targetReps, lift, intensity, platesAvailable });
     setWarmups(sets);
     setStep(5);
+
+    setTokensUsed(tokensUsed + 1);
+    if (tokensUsed + 1 >= MAX_FREE_TOKENS) setGoToPayment(true);
   }
+
+  if (goToPayment) return <PaymentPage />
 
   return (
     <div className="min-h-screen bg-neutral-900 flex items-center justify-center p-4 relative">
       <Toaster position="top-right" richColors />
+
+      {/* Tokens tracker */}
+      <div className="absolute top-4 right-4 bg-neutral-800/60 border border-neutral-700 px-4 py-2 rounded-xl text-amber-400 font-semibold z-20">
+        Tokens left: {MAX_FREE_TOKENS - tokensUsed}
+      </div>
+
       <div className="absolute bottom-0 left-0 w-full h-1 bg-neutral-800">
         <div className="h-1 bg-amber-400 transition-all" style={{ width: `${progressPercent}%` }} />
       </div>
