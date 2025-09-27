@@ -1,10 +1,10 @@
 import React from 'react'
-import WarmupCalculator from './components/WarmupCalculator';
+import LandingPage from './components/LandingPage';
 
 const Home = () => {
     return (
         <>
-            <WarmupCalculator />
+            <LandingPage />
         </>
     )
 }
