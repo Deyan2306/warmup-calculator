@@ -1,4 +1,6 @@
 "use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { WarmupSet, Lift, WarmupMethod } from "@/lib/warmup/types";
 import { formatKg } from "@/lib/warmup/format";
@@ -10,10 +12,22 @@ export default function StepResult({
   restart,
 }: {
   lift: Lift;
-  method: WarmupMethod;
+  method: WarmupMethod | undefined;
   warmups: WarmupSet[];
   restart: () => void;
 }) {
+  const router = useRouter();
+
+  // Redirect to first step if method is undefined
+  useEffect(() => {
+    if (!method) {
+      restart(); // reset to step 0
+      router.push("/"); // or wherever your first step page is
+    }
+  }, [method, restart, router]);
+
+  if (!method) return null; // render nothing while redirecting
+
   return (
     <div className="space-y-4">
       <p className="text-neutral-300">Your warm-up plan ({method.toUpperCase()} method):</p>

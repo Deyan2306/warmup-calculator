@@ -16,6 +16,7 @@ import StepIntensity from "./warmup/steps/StepIntensity";
 import StepMethod from "./warmup/steps/StepMethod";
 import StepWorkSet from "./warmup/steps/StepWorkSet";
 import StepResult from "./warmup/steps/StepResult";
+import { useSearchParams } from "next/navigation";
 
 export default function WarmupCalculatorGuided() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -26,7 +27,7 @@ export default function WarmupCalculatorGuided() {
   const [goToPayment, setGoToPayment] = useState(false);
 
   const [step, setStep] = useState(0);
-  const [lift, setLift] = useState<Lift>();
+  const [lift, setLift] = useState<Lift | undefined>(undefined);
   const [oneRMs, setOneRMs] = useState<Record<Lift, number>>({ squat: 0, bench: 0, deadlift: 0 });
   const [plates, setPlates] = useState<Record<string, boolean>>({
     p25: false,
@@ -42,9 +43,12 @@ export default function WarmupCalculatorGuided() {
     p_125: false,
   });
   const [intensity, setIntensity] = useState<Intensity>();
-  const [method, setMethod] = useState<WarmupMethod>();
+  const [method, setMethod] = useState<WarmupMethod | undefined>(undefined);
   const [workSets, setWorkSets] = useState<{ weight: number; reps: number }[]>([{ weight: 0, reps: 0 }]);
   const [warmups, setWarmups] = useState<WarmupSet[]>([]);
+
+  const searchParams = useSearchParams();
+  const liftParam = searchParams.get("lift") as Lift | null;
 
   const platesAvailable = Object.entries(plates)
     .filter(([_, v]) => v)
@@ -53,6 +57,13 @@ export default function WarmupCalculatorGuided() {
 
   const totalSteps = 6;
   const progressPercent = (step / totalSteps) * 100;
+
+  useEffect(() => {
+    if (liftParam) {
+      setLift(liftParam);
+      setStep(1);
+    }
+  }, [liftParam]);
 
   useEffect(() => {
     if (!cardRef.current) return;
@@ -109,7 +120,7 @@ export default function WarmupCalculatorGuided() {
 
       <Card
         ref={cardRef}
-        className="max-w-2xl bg-neutral-900/80 backdrop-blur-lg border border-neutral-700 shadow-2xl rounded-3xl overflow-hidden"
+        className="max-w-2xl bg-neutral-900/80 backdrop-blur-lg border border-neutral-700 shadow-2xl rounded-3xl overflow-visible"
       >
         <CardContent className="p-6 space-y-6">
           <h1 className="text-3xl font-extrabold text-amber-400">Powerlifting Warm-up Generator</h1>

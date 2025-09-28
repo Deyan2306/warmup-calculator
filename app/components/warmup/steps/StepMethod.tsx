@@ -8,7 +8,7 @@ export default function StepMethod({
   nextStep,
   prevStep,
 }: {
-  method: WarmupMethod;
+  method: WarmupMethod | undefined;
   setMethod: (m: WarmupMethod) => void;
   nextStep: () => void;
   prevStep: () => void;
