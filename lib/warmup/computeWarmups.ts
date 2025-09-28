@@ -14,7 +14,7 @@ export function computeWarmups({
   lift?: Lift;
   intensity?: Intensity;
   platesAvailable: number[];
-  method: WarmupMethod;
+  method: WarmupMethod | undefined;
 }): WarmupSet[] {
   if (!lift || !intensity) return [];
 
@@ -68,6 +68,45 @@ export function computeWarmups({
         const reps = 3 - idx;
         sets.push({ weight: rounded, reps, rpe: 6 + idx });
       });
+      break;
+    }
+
+    case "volumeRamp": {
+      const percentages = [0.3, 0.5, 0.65,  0.75, 0.85];
+      percentages.forEach((p, idx) => {
+        const raw = targetWeightKg * p;
+        const rounded = roundToNearestAvailable(raw, platesAvailable);
+        const reps = Math.max(1, Math.round(targetReps * (1 - idx * 0.1)));
+        const rpe = 5 + idx * 0.5;
+        sets.push({ weight: rounded, reps, rpe });
+      })
+
+      break;
+    }
+
+    case "specificRamp": {
+      const percentages = [0.5, 0.65, 0.8, 0.9];
+      percentages.forEach((p, idx) => {
+        const raw = targetWeightKg * p;
+        const rounded = roundToNearestAvailable(raw, platesAvailable);
+        const reps = idx === percentages.length - 1 ? targetReps : Math.max(1, targetReps - (percentages.length - idx));
+        const rpe = 6 + idx;
+        sets.push({ weight: rounded, reps, rpe });
+      });
+
+      break;
+    }
+
+    case "dynamicRamp": {
+      const percentages = [0.4, 0.55, 0.7, 0.8];
+      percentages.forEach((p, idx) => {
+        const raw = targetWeightKg * p;
+        const rounded = roundToNearestAvailable(raw, platesAvailable);
+        const reps = Math.max(1, Math.round(targetReps * (1 - idx * 0.15)));
+        const rpe = 5 + idx * 1.2;
+        sets.push({ weight: rounded, reps, rpe });
+      });
+
       break;
     }
   }

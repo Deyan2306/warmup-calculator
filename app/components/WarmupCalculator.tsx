@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { Toaster } from "sonner";
@@ -16,16 +15,18 @@ import StepIntensity from "./warmup/steps/StepIntensity";
 import StepMethod from "./warmup/steps/StepMethod";
 import StepWorkSet from "./warmup/steps/StepWorkSet";
 import StepResult from "./warmup/steps/StepResult";
+import ConfirmModal from "./ConfirmModal";
 import { useSearchParams } from "next/navigation";
 
 export default function WarmupCalculatorGuided() {
   const cardRef = useRef<HTMLDivElement>(null);
+  const searchParams = useSearchParams();
 
   const MAX_FREE_TOKENS = 3;
 
+  const [confirmMethod, setConfirmMethod] = useState<WarmupMethod | null>(null);
   const [tokensUsed, setTokensUsed] = useState(0);
   const [goToPayment, setGoToPayment] = useState(false);
-
   const [step, setStep] = useState(0);
   const [lift, setLift] = useState<Lift | undefined>(undefined);
   const [oneRMs, setOneRMs] = useState<Record<Lift, number>>({ squat: 0, bench: 0, deadlift: 0 });
@@ -47,7 +48,6 @@ export default function WarmupCalculatorGuided() {
   const [workSets, setWorkSets] = useState<{ weight: number; reps: number }[]>([{ weight: 0, reps: 0 }]);
   const [warmups, setWarmups] = useState<WarmupSet[]>([]);
 
-  const searchParams = useSearchParams();
   const liftParam = searchParams.get("lift") as Lift | null;
 
   const platesAvailable = Object.entries(plates)
@@ -58,6 +58,7 @@ export default function WarmupCalculatorGuided() {
   const totalSteps = 6;
   const progressPercent = (step / totalSteps) * 100;
 
+  // Auto-set lift from query param
   useEffect(() => {
     if (liftParam) {
       setLift(liftParam);
@@ -65,10 +66,23 @@ export default function WarmupCalculatorGuided() {
     }
   }, [liftParam]);
 
+  // Animate card transitions
   useEffect(() => {
     if (!cardRef.current) return;
-    gsap.fromTo(cardRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" });
+    gsap.fromTo(
+      cardRef.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
+    );
   }, [step]);
+
+  function getSuggestedMethods(reps: number): WarmupMethod[] {
+    const suggested: WarmupMethod[] = [];
+    if (reps >= 10) suggested.push("pyramid", "volumeRamp");
+    else if (reps <= 3) suggested.push("fastRamp", "dynamicRamp");
+    else suggested.push("rpe", "classic");
+    return suggested;
+  }
 
   function nextStep() {
     if (tokensUsed >= MAX_FREE_TOKENS) {
@@ -84,6 +98,8 @@ export default function WarmupCalculatorGuided() {
   }
 
   function generateWarmup() {
+    if (!method) return setStep(4); // go to method step if undefined
+
     const targetWeightKg = workSets[0]?.weight || 0;
     const targetReps = workSets[0]?.reps || 0;
 
@@ -97,7 +113,6 @@ export default function WarmupCalculatorGuided() {
     });
     setWarmups(sets);
     setStep(6);
-
     setTokensUsed(tokensUsed + 1);
     if (tokensUsed + 1 >= MAX_FREE_TOKENS) setGoToPayment(true);
   }
@@ -107,6 +122,23 @@ export default function WarmupCalculatorGuided() {
   return (
     <div className="min-h-screen bg-neutral-900 flex items-center justify-center p-4 relative">
       <Toaster position="top-right" richColors />
+
+      {/* Full-page dim when modal shows */}
+      {confirmMethod && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
+          <ConfirmModal
+            message={`The method "${confirmMethod}" is not optimal for your reps (${workSets[0]?.reps}). Are you sure you want to proceed?`}
+            onConfirm={() => {
+              if (confirmMethod) {
+                setMethod(confirmMethod);
+                setConfirmMethod(null);
+                nextStep();
+              }
+            }}
+            onCancel={() => setConfirmMethod(null)}
+          />
+        </div>
+      )}
 
       {/* Tokens tracker */}
       <div className="absolute top-4 right-4 bg-neutral-800/60 border border-neutral-700 px-4 py-2 rounded-xl text-amber-400 font-semibold z-20">
@@ -120,10 +152,12 @@ export default function WarmupCalculatorGuided() {
 
       <Card
         ref={cardRef}
-        className="max-w-2xl bg-neutral-900/80 backdrop-blur-lg border border-neutral-700 shadow-2xl rounded-3xl overflow-visible"
+        className="max-w-2xl bg-neutral-900/80 backdrop-blur-lg border border-neutral-700 shadow-2xl rounded-3xl overflow-visible relative z-10"
       >
         <CardContent className="p-6 space-y-6">
-          <h1 className="text-3xl font-extrabold text-amber-400">Powerlifting Warm-up Generator</h1>
+          <h1 className="text-3xl font-extrabold text-amber-400 mb-4">
+            Powerlifting Warm-up Generator
+          </h1>
 
           {step === 0 && <StepLift lift={lift} setLift={setLift} nextStep={nextStep} />}
           {step === 1 && lift && (
@@ -135,11 +169,50 @@ export default function WarmupCalculatorGuided() {
               prevStep={prevStep}
             />
           )}
-          {step === 2 && <StepPlates plates={plates} setPlates={setPlates} nextStep={nextStep} prevStep={prevStep} />}
-          {step === 3 && <StepIntensity intensity={intensity} setIntensity={setIntensity} nextStep={nextStep} prevStep={prevStep} />}
-          {step === 4 && <StepMethod method={method} setMethod={setMethod} nextStep={nextStep} prevStep={prevStep} />}
-          {step === 5 && <StepWorkSet workSets={workSets} setWorkSets={setWorkSets} nextStep={nextStep} prevStep={prevStep} />}
-          {step === 6 && lift && <StepResult lift={lift} method={method} warmups={warmups} restart={() => setStep(0)} />}
+          {step === 2 && (
+            <StepPlates
+              plates={plates}
+              setPlates={setPlates}
+              nextStep={nextStep}
+              prevStep={prevStep}
+            />
+          )}
+          {step === 3 && (
+            <StepIntensity
+              intensity={intensity}
+              setIntensity={setIntensity}
+              nextStep={nextStep}
+              prevStep={prevStep}
+            />
+          )}
+          {/* StepWorkSet comes BEFORE StepMethod */}
+          {step === 4 && (
+            <StepWorkSet
+              workSets={workSets}
+              setWorkSets={setWorkSets}
+              nextStep={nextStep}
+              prevStep={prevStep}
+            />
+          )}
+          {step === 5 && (
+            <StepMethod
+              method={method}
+              setMethod={setMethod}
+              nextStep={nextStep}
+              prevStep={prevStep}
+              reps={workSets[0]?.reps || 0} // pass top set reps
+              suggestedMethods={getSuggestedMethods(workSets[0]?.reps || 0)}
+              setConfirmMethod={setConfirmMethod}
+            />
+          )}
+          {step === 6 && lift && (
+            <StepResult
+              lift={lift}
+              method={method}
+              warmups={warmups}
+              restart={() => setStep(0)}
+            />
+          )}
         </CardContent>
       </Card>
     </div>
