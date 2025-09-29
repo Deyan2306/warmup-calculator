@@ -18,6 +18,7 @@ import StepWorkSet from "./warmup/steps/StepWorkSet";
 import StepResult from "./warmup/steps/StepResult";
 import ConfirmModal from "./ConfirmModal";
 import { useSearchParams } from "next/navigation";
+import SelectionsSummary from "./warmup/steps/SelectionSummary";
 
 export default function WarmupCalculatorGuided() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -150,6 +151,18 @@ export default function WarmupCalculatorGuided() {
       {/* Tokens tracker */}
       <div className="absolute top-4 right-4 bg-neutral-800/60 border border-neutral-700 px-4 py-2 rounded-xl text-amber-400 font-semibold z-20">
         Tokens left: {MAX_FREE_TOKENS - tokensUsed}
+      </div>
+
+      {/* Selections Summary */}
+      <div className="w-full md:w-auto md:fixed md:top-4 md:left-4 z-20 mb-4 md:mb-0">
+        <SelectionsSummary
+          lift={lift}
+          oneRMs={oneRMs}
+          plates={plates}
+          intensity={intensity}
+          method={method}
+          workSets={workSets}
+        />
       </div>
 
       {/* Progress bar */}
