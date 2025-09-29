@@ -5,7 +5,6 @@ import LandingPage from './components/LandingPage';
 
 export const dynamic = "force-dynamic";
 
-
 const Home = () => {
     return (
         <>

@@ -168,12 +168,14 @@ export default function LandingPage() {
             ref={heroTextRef}
             className="text-amber-200 text-lg md:text-xl drop-shadow"
           >
-            Strong Lifts Start With Strong Warm-ups. Stop wasting reps and leaving PRs on the bar. PreppedUp generates personalized warm-ups so you lift smarter, faster, and safer.
+            Strong Lifts Start With Strong Warm-ups. Stop wasting reps and
+            leaving PRs on the bar. PreppedUp generates personalized warm-ups so
+            you lift smarter, faster, and safer.
           </p>
           <Link href="/create-warmup">
             <Button
               ref={heroButtonRef}
-              className="px-12 py-5 bg-amber-400 text-neutral-900 font-bold rounded-3xl hover:bg-amber-500 transform hover:scale-105 transition shadow-lg"
+              className="px-12 py-5 bg-amber-400 text-neutral-900 font-bold rounded-3xl hover:bg-amber-500 transform hover:cursor-pointer hover:scale-105 transition shadow-lg"
             >
               Get Started
             </Button>
@@ -202,7 +204,9 @@ export default function LandingPage() {
                 {item === "Set 1" && (
                   <>
                     <div className="space-y-1">
-                      <div className="text-sm font-medium text-amber-400">Set 1</div>
+                      <div className="text-sm font-medium text-amber-400">
+                        Set 1
+                      </div>
                       <div className="text-xs text-neutral-200">Squat</div>
                     </div>
                     <div className="text-right text-amber-400">
@@ -214,7 +218,9 @@ export default function LandingPage() {
                 {item === "Set 2" && (
                   <>
                     <div className="space-y-1">
-                      <div className="text-sm font-medium text-amber-400">Set 2</div>
+                      <div className="text-sm font-medium text-amber-400">
+                        Set 2
+                      </div>
                       <div className="text-xs text-neutral-200">Squat</div>
                     </div>
                     <div className="text-right text-amber-400">
@@ -225,13 +231,17 @@ export default function LandingPage() {
                 )}
                 {item === "AI Tip" && (
                   <>
-                    <div className="text-sm text-amber-400 font-medium">AI Tip</div>
+                    <div className="text-sm text-amber-400 font-medium">
+                      AI Tip
+                    </div>
                     <div className="text-xs text-neutral-100 text-right">
                       Add an extra ramp set for explosiveness!
                     </div>
                   </>
                 )}
-                {item === "CTA" && <div>Get your full warm-up instantly with PreppedUp</div>}
+                {item === "CTA" && (
+                  <div>Get your full warm-up instantly with PreppedUp</div>
+                )}
               </div>
             ))}
           </div>
@@ -251,17 +261,30 @@ export default function LandingPage() {
       {/* Features Section */}
       <section className="relative z-10 mt-20 max-w-6xl w-full grid grid-cols-1 sm:grid-cols-3 gap-8 text-left">
         {[
-          { title: "Custom Warm-ups", desc: "Generate warm-up plans tailored to your lift and available plates." },
-          { title: "Track Intensity", desc: "Choose light, medium, or heavy days and optimize your performance." },
-          { title: "Safe & Efficient", desc: "Warm up properly and reduce the risk of injury while saving time." },
+          {
+            title: "Custom Warm-ups",
+            desc: "Generate warm-up plans tailored to your lift and available plates.",
+          },
+          {
+            title: "Track Intensity",
+            desc: "Choose light, medium, or heavy days and optimize your performance.",
+          },
+          {
+            title: "Safe & Efficient",
+            desc: "Warm up properly and reduce the risk of injury while saving time.",
+          },
         ].map((feature, idx) => (
           <div
             key={idx}
             ref={(el) => addFeatureRefs(el, idx)}
             className="bg-neutral-800/60 p-8 rounded-3xl border border-neutral-700 hover:shadow-2xl transition transform hover:-translate-y-2 hover:scale-105 backdrop-blur-md"
           >
-            <h3 className="text-amber-400 font-bold text-xl mb-3">{feature.title}</h3>
-            <p className="text-neutral-200 text-sm md:text-base">{feature.desc}</p>
+            <h3 className="text-amber-400 font-bold text-xl mb-3">
+              {feature.title}
+            </h3>
+            <p className="text-neutral-200 text-sm md:text-base">
+              {feature.desc}
+            </p>
           </div>
         ))}
       </section>
@@ -275,12 +298,13 @@ export default function LandingPage() {
           Ready to Lift Smarter?
         </h2>
         <p className="text-amber-200 text-lg md:text-xl max-w-2xl text-center">
-          Elite lifters don’t guess. They prepare. PreppedUp AI gives you the edge — every session, every lift.
+          Elite lifters don’t guess. They prepare. PreppedUp AI gives you the
+          edge — every session, every lift.
         </p>
         <Link href="/create-warmup">
           <Button
             ref={ctaButtonRef}
-            className="px-16 py-5 bg-gradient-to-r from-amber-400 to-amber-500 text-neutral-900 font-bold rounded-full hover:scale-105 transform transition shadow-xl"
+            className="px-16 py-5 bg-gradient-to-r from-amber-400 to-amber-500 text-neutral-900 hover:cursor-pointer font-bold rounded-full hover:scale-105 transform transition shadow-xl"
           >
             Create My Warm-up
           </Button>

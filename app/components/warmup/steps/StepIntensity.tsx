@@ -36,7 +36,7 @@ export default function StepIntensity({
       </div>
       <Button
         onClick={prevStep}
-        className="w-full py-2 bg-neutral-800 text-amber-400 cursor-pointer rounded-lg border border-neutral-700 mt-2"
+        className="w-full py-2 bg-neutral-900 hover:bg-neutral-800 text-amber-400 cursor-pointer rounded-lg border border-neutral-700 mt-2"
       >
         Previous
       </Button>

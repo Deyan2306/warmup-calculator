@@ -30,7 +30,11 @@ export default function WarmupCalculatorGuided() {
   const [goToPayment, setGoToPayment] = useState(false);
   const [step, setStep] = useState(0);
   const [lift, setLift] = useState<Lift | undefined>(undefined);
-  const [oneRMs, setOneRMs] = useState<Record<Lift, number>>({ squat: 0, bench: 0, deadlift: 0 });
+  const [oneRMs, setOneRMs] = useState<Record<Lift, number>>({
+    squat: 0,
+    bench: 0,
+    deadlift: 0,
+  });
   const [plates, setPlates] = useState<Record<string, boolean>>({
     p25: false,
     p20: false,
@@ -46,7 +50,9 @@ export default function WarmupCalculatorGuided() {
   });
   const [intensity, setIntensity] = useState<Intensity>();
   const [method, setMethod] = useState<WarmupMethod | undefined>(undefined);
-  const [workSets, setWorkSets] = useState<{ weight: number; reps: number }[]>([{ weight: 0, reps: 0 }]);
+  const [workSets, setWorkSets] = useState<{ weight: number; reps: number }[]>([
+    { weight: 0, reps: 0 },
+  ]);
   const [warmups, setWarmups] = useState<WarmupSet[]>([]);
 
   const liftParam = searchParams.get("lift") as Lift | null;
@@ -148,7 +154,10 @@ export default function WarmupCalculatorGuided() {
 
       {/* Progress bar */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-neutral-800">
-        <div className="h-1 bg-amber-400 transition-all" style={{ width: `${progressPercent}%` }} />
+        <div
+          className="h-1 bg-amber-400 transition-all"
+          style={{ width: `${progressPercent}%` }}
+        />
       </div>
 
       <Card
@@ -160,7 +169,9 @@ export default function WarmupCalculatorGuided() {
             Powerlifting Warm-up Generator
           </h1>
 
-          {step === 0 && <StepLift lift={lift} setLift={setLift} nextStep={nextStep} />}
+          {step === 0 && (
+            <StepLift lift={lift} setLift={setLift} nextStep={nextStep} />
+          )}
           {step === 1 && lift && (
             <StepOneRM
               lift={lift}

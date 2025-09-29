@@ -1,9 +1,11 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lift } from "@/lib/warmup/types";
 import { Info } from "lucide-react";
 import Link from "next/link";
+import { gsap } from "gsap";
 
 export default function StepOneRM({
   lift,
@@ -18,14 +20,31 @@ export default function StepOneRM({
   nextStep: () => void;
   prevStep: () => void;
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from(".step-one-child", {
+        y: 20,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 0.5,
+        ease: "power3.out",
+      });
+    }, containerRef);
+
+    return () => ctx.revert(); // cleanup on unmount
+  }, []);
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between relative">
-        <p className="text-neutral-300">
+    <div className="space-y-4" ref={containerRef}>
+      <div className="flex items-center justify-between relative step-one-child">
+        <p className="text-neutral-300 font-semibold text-lg">
           Enter your current 1RM for {lift.toUpperCase()}:
         </p>
 
-        {/* Pass the lift as a query param */}
         <Link
           href={`/estimate-one-rep-max?lift=${encodeURIComponent(lift)}`}
           className="group relative"
@@ -54,19 +73,26 @@ export default function StepOneRM({
           }))
         }
         placeholder={`${lift.toUpperCase()} 1RM`}
-        className="bg-neutral-900/50 text-amber-400 border border-neutral-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400"
+        className="
+          bg-neutral-800 text-amber-400 border border-amber-400
+          rounded-lg px-3 py-3
+          focus:ring-2 focus:ring-amber-400
+          transition-all duration-300
+          hover:scale-105 hover:shadow-md
+          step-one-child
+        "
       />
 
-      <div className="flex gap-2">
+      <div className="flex gap-3 step-one-child">
         <Button
           onClick={prevStep}
-          className="flex-1 py-2 bg-neutral-800 text-amber-400 cursor-pointer rounded-lg border border-neutral-700"
+          className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
         >
           Previous
         </Button>
         <Button
           onClick={nextStep}
-          className="flex-1 py-2 bg-neutral-800 text-amber-400 cursor-pointer rounded-lg border border-neutral-700"
+          className="flex-1 py-3 bg-amber-500 text-neutral-900 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg"
         >
           Next
         </Button>

@@ -72,14 +72,14 @@ export function computeWarmups({
     }
 
     case "volumeRamp": {
-      const percentages = [0.3, 0.5, 0.65,  0.75, 0.85];
+      const percentages = [0.3, 0.5, 0.65, 0.75, 0.85];
       percentages.forEach((p, idx) => {
         const raw = targetWeightKg * p;
         const rounded = roundToNearestAvailable(raw, platesAvailable);
         const reps = Math.max(1, Math.round(targetReps * (1 - idx * 0.1)));
         const rpe = 5 + idx * 0.5;
         sets.push({ weight: rounded, reps, rpe });
-      })
+      });
 
       break;
     }
@@ -89,7 +89,10 @@ export function computeWarmups({
       percentages.forEach((p, idx) => {
         const raw = targetWeightKg * p;
         const rounded = roundToNearestAvailable(raw, platesAvailable);
-        const reps = idx === percentages.length - 1 ? targetReps : Math.max(1, targetReps - (percentages.length - idx));
+        const reps =
+          idx === percentages.length - 1
+            ? targetReps
+            : Math.max(1, targetReps - (percentages.length - idx));
         const rpe = 6 + idx;
         sets.push({ weight: rounded, reps, rpe });
       });
@@ -111,6 +114,10 @@ export function computeWarmups({
     }
   }
 
-  sets.push({ weight: targetWeightKg, reps: `${targetReps} — work set`, rpe: 8.5 });
+  sets.push({
+    weight: targetWeightKg,
+    reps: `${targetReps} — work set`,
+    rpe: 8.5,
+  });
   return sets;
 }

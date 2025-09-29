@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { WarmupSet, Lift, WarmupMethod } from "@/lib/warmup/types";
 import { formatKg } from "@/lib/warmup/format";
+import Link from "next/link";
+import { Home } from "lucide-react";
 
 export default function StepResult({
   lift,
@@ -30,7 +32,9 @@ export default function StepResult({
 
   return (
     <div className="space-y-4">
-      <p className="text-neutral-300">Your warm-up plan ({method.toUpperCase()} method):</p>
+      <p className="text-neutral-300">
+        Your warm-up plan ({method.toUpperCase()} method):
+      </p>
       <ul className="space-y-2">
         {warmups.map((s, i) => {
           const isWorkSet = i === warmups.length - 1;
@@ -42,8 +46,12 @@ export default function StepResult({
               }`}
             >
               <div>
-                <div className="text-sm font-medium text-amber-400">Set {i + 1}</div>
-                <div className="text-xs text-neutral-400">{lift.toUpperCase()}</div>
+                <div className="text-sm font-medium text-amber-400">
+                  Set {i + 1}
+                </div>
+                <div className="text-xs text-neutral-400">
+                  {lift.toUpperCase()}
+                </div>
               </div>
               <div
                 className={`text-right ${
@@ -59,12 +67,13 @@ export default function StepResult({
           );
         })}
       </ul>
-      <Button
-        onClick={restart}
-        className="w-full py-2 bg-neutral-800 text-amber-400 cursor-pointer rounded-lg border border-neutral-700"
-      >
-        Start Over
-      </Button>
+
+      <Link href="/">
+        <Button className="w-full py-2 bg-neutral-900 hover:bg-neutral-800 text-amber-400 cursor-pointer rounded-lg border border-neutral-700">
+          <Home className="mr-2 h-4 w-4" />
+          Return to Home
+        </Button>
+      </Link>
     </div>
   );
 }

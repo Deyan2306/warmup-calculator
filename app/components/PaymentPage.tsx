@@ -23,7 +23,6 @@ export default function PaymentPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-900 to-neutral-800 flex flex-col items-center justify-center px-6 relative text-center">
-      
       {/* Tokens Tracker */}
       <div className="absolute top-4 right-4 bg-neutral-800/60 border border-neutral-700 px-4 py-2 rounded-xl text-amber-400 font-semibold">
         Tokens left: {subscribed ? "∞" : tokensLeft}
@@ -34,7 +33,8 @@ export default function PaymentPage() {
           Stay PreppedUp
         </h1>
         <p className="text-neutral-300 text-lg sm:text-xl">
-          You have {MAX_FREE_WORKOUTS} free workouts. After that, a subscription is required to continue generating warm-ups.
+          You have {MAX_FREE_WORKOUTS} free workouts. After that, a subscription
+          is required to continue generating warm-ups.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
@@ -43,7 +43,9 @@ export default function PaymentPage() {
             disabled={tokensLeft === 0 && !subscribed}
             className="px-8 py-4 bg-amber-400 text-neutral-900 font-bold rounded-3xl hover:bg-amber-500 transition"
           >
-            {tokensLeft > 0 || subscribed ? "Start Workout" : "Subscribe to Continue"}
+            {tokensLeft > 0 || subscribed
+              ? "Start Workout"
+              : "Subscribe to Continue"}
           </Button>
 
           {!subscribed && (
