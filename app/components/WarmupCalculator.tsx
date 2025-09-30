@@ -66,7 +66,6 @@ export default function WarmupCalculatorGuided() {
   const totalSteps = 6;
   const progressPercent = (step / totalSteps) * 100;
 
-  // Auto-set lift from query param
   useEffect(() => {
     if (liftParam) {
       setLift(liftParam);
@@ -74,7 +73,6 @@ export default function WarmupCalculatorGuided() {
     }
   }, [liftParam]);
 
-  // Animate card transitions
   useEffect(() => {
     if (!cardRef.current) return;
     gsap.fromTo(
@@ -106,7 +104,7 @@ export default function WarmupCalculatorGuided() {
   }
 
   function generateWarmup() {
-    if (!method) return setStep(4); // go to method step if undefined
+    if (!method) return setStep(4);
 
     const targetWeightKg = workSets[0]?.weight || 0;
     const targetReps = workSets[0]?.reps || 0;
@@ -128,10 +126,9 @@ export default function WarmupCalculatorGuided() {
   if (goToPayment) return <PaymentPage />;
 
   return (
-    <div className="min-h-screen bg-neutral-900 flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-neutral-900 relative flex flex-col items-center justify-center p-4 overflow-x-hidden">
       <Toaster position="top-right" richColors />
 
-      {/* Full-page dim when modal shows */}
       {confirmMethod && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
           <ConfirmModal
@@ -149,12 +146,94 @@ export default function WarmupCalculatorGuided() {
       )}
 
       {/* Tokens tracker */}
-      <div className="absolute top-4 right-4 bg-neutral-800/60 border border-neutral-700 px-4 py-2 rounded-xl text-amber-400 font-semibold z-20">
+      <div className="absolute top-4 right-4 bg-neutral-800/60 border border-neutral-700 px-3 py-2 rounded-xl text-amber-400 font-semibold z-20 max-w-[90vw] truncate">
         Tokens left: {MAX_FREE_TOKENS - tokensUsed}
       </div>
 
-      {/* Selections Summary */}
-      <div className="w-full md:w-auto md:fixed md:top-4 md:left-4 z-20 mb-4 md:mb-0">
+      {/* Main Card */}
+      <div className="w-full max-w-full sm:max-w-md px-2">
+        <Card
+          ref={cardRef}
+          className="w-full bg-neutral-900/80 backdrop-blur-lg border border-neutral-700 shadow-2xl rounded-3xl overflow-visible relative z-10"
+        >
+          <CardContent className="p-6 space-y-6">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-amber-400 mb-4 text-center sm:text-left">
+              Powerlifting Warm-up Generator
+            </h1>
+
+            {step === 0 && (
+              <StepLift lift={lift} setLift={setLift} nextStep={nextStep} />
+            )}
+            {step === 1 && lift && (
+              <StepOneRM
+                lift={lift}
+                oneRMs={oneRMs}
+                setOneRMs={setOneRMs}
+                nextStep={nextStep}
+                prevStep={prevStep}
+              />
+            )}
+            {step === 2 && (
+              <StepPlates
+                plates={plates}
+                setPlates={setPlates}
+                nextStep={nextStep}
+                prevStep={prevStep}
+              />
+            )}
+            {step === 3 && (
+              <StepIntensity
+                intensity={intensity}
+                setIntensity={setIntensity}
+                nextStep={nextStep}
+                prevStep={prevStep}
+              />
+            )}
+            {step === 4 && (
+              <StepWorkSet
+                workSets={workSets}
+                setWorkSets={setWorkSets}
+                nextStep={nextStep}
+                prevStep={prevStep}
+              />
+            )}
+            {step === 5 && (
+              <StepMethod
+                method={method}
+                setMethod={setMethod}
+                nextStep={nextStep}
+                prevStep={prevStep}
+                reps={workSets[0]?.reps || 0}
+                suggestedMethods={getSuggestedMethods(workSets[0]?.reps || 0)}
+                setConfirmMethod={setConfirmMethod}
+              />
+            )}
+            {step === 6 && lift && (
+              <StepResult
+                lift={lift}
+                method={method}
+                warmups={warmups}
+                restart={() => setStep(0)}
+              />
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Summary below card on screens <1200px */}
+        <div className="xl:hidden mt-4 w-full">
+          <SelectionsSummary
+            lift={lift}
+            oneRMs={oneRMs}
+            plates={plates}
+            intensity={intensity}
+            method={method}
+            workSets={workSets}
+          />
+        </div>
+      </div>
+
+      {/* Summary top-left on screens ≥1200px */}
+      <div className="hidden xl:block absolute top-4 left-4 w-[300px] max-w-[90vw]">
         <SelectionsSummary
           lift={lift}
           oneRMs={oneRMs}
@@ -172,74 +251,6 @@ export default function WarmupCalculatorGuided() {
           style={{ width: `${progressPercent}%` }}
         />
       </div>
-
-      <Card
-        ref={cardRef}
-        className="max-w-2xl bg-neutral-900/80 backdrop-blur-lg border border-neutral-700 shadow-2xl rounded-3xl overflow-visible relative z-10"
-      >
-        <CardContent className="p-6 space-y-6">
-          <h1 className="text-3xl font-extrabold text-amber-400 mb-4">
-            Powerlifting Warm-up Generator
-          </h1>
-
-          {step === 0 && (
-            <StepLift lift={lift} setLift={setLift} nextStep={nextStep} />
-          )}
-          {step === 1 && lift && (
-            <StepOneRM
-              lift={lift}
-              oneRMs={oneRMs}
-              setOneRMs={setOneRMs}
-              nextStep={nextStep}
-              prevStep={prevStep}
-            />
-          )}
-          {step === 2 && (
-            <StepPlates
-              plates={plates}
-              setPlates={setPlates}
-              nextStep={nextStep}
-              prevStep={prevStep}
-            />
-          )}
-          {step === 3 && (
-            <StepIntensity
-              intensity={intensity}
-              setIntensity={setIntensity}
-              nextStep={nextStep}
-              prevStep={prevStep}
-            />
-          )}
-          {/* StepWorkSet comes BEFORE StepMethod */}
-          {step === 4 && (
-            <StepWorkSet
-              workSets={workSets}
-              setWorkSets={setWorkSets}
-              nextStep={nextStep}
-              prevStep={prevStep}
-            />
-          )}
-          {step === 5 && (
-            <StepMethod
-              method={method}
-              setMethod={setMethod}
-              nextStep={nextStep}
-              prevStep={prevStep}
-              reps={workSets[0]?.reps || 0} // pass top set reps
-              suggestedMethods={getSuggestedMethods(workSets[0]?.reps || 0)}
-              setConfirmMethod={setConfirmMethod}
-            />
-          )}
-          {step === 6 && lift && (
-            <StepResult
-              lift={lift}
-              method={method}
-              warmups={warmups}
-              restart={() => setStep(0)}
-            />
-          )}
-        </CardContent>
-      </Card>
     </div>
   );
 }

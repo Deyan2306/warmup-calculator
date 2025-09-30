@@ -1,6 +1,27 @@
 "use client";
 
 import { Intensity, Lift, WarmupMethod } from "@/lib/warmup/types";
+import {
+  CheckCircle2,
+  Circle,
+  Dumbbell,
+  Weight,
+  Gauge,
+  Layers,
+  Target,
+} from "lucide-react";
+
+// Format lift/intensity/method nicely
+function capitalize(word: string): string {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function formatMethod(method: string): string {
+  return method
+    .replace(/([A-Z])/g, " $1") // split camelCase
+    .replace(/^./, (s) => s.toUpperCase()) // capitalize first
+    .trim();
+}
 
 interface SelectionSummaryProps {
   lift?: Lift;
@@ -24,43 +45,78 @@ export default function SelectionsSummary({
     .map(([k]) => k.replace("p", "").replace("_", "."))
     .join(", ");
 
+  function Row({
+    label,
+    value,
+    icon,
+  }: {
+    label: string;
+    value?: string | number;
+    icon: React.ReactNode;
+  }) {
+    const isSelected = value !== undefined && value !== "" && value !== 0;
+    return (
+      <div className="flex items-center space-x-2">
+        {isSelected ? (
+          <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
+        ) : (
+          <Circle className="w-5 h-5 text-neutral-500 shrink-0" />
+        )}
+        <div
+          className={`flex items-center justify-between w-full ${
+            isSelected ? "text-green-400 font-semibold" : "text-neutral-400"
+          }`}
+        >
+          <div className="flex items-center space-x-1">
+            {icon}
+            <span>{label}:</span>
+          </div>
+          <span className="truncate max-w-[120px] text-right">
+            {isSelected ? value : ""}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-neutral-800/70 border border-neutral-700 text-white p-4 rounded-xl max-w-xs w-full shadow-lg">
-      <h2 className="font-bold text-lg mb-2 text-amber-400">Your Selections</h2>
-      <div className="text-sm space-y-1">
-        {lift && (
-          <div>
-            Lift: <strong>{lift}</strong>
-          </div>
-        )}
-        {lift && oneRMs[lift] > 0 && (
-          <div>
-            1RM: <strong>{oneRMs[lift]} kg</strong>
-          </div>
-        )}
-        {selectedPlates && (
-          <div>
-            Plates: <strong>{selectedPlates}</strong>
-          </div>
-        )}
-        {intensity && (
-          <div>
-            Intensity: <strong>{intensity}</strong>
-          </div>
-        )}
-        {method && (
-          <div>
-            Method: <strong>{method}</strong>
-          </div>
-        )}
-        {workSets[0]?.weight > 0 && workSets[0]?.reps > 0 && (
-          <div>
-            Work Set:{" "}
-            <strong>
-              {workSets[0].weight} kg x {workSets[0].reps}
-            </strong>
-          </div>
-        )}
+    <div className="bg-neutral-800/70 border border-neutral-700 text-white p-4 rounded-xl w-72 shadow-lg">
+      <h2 className="font-bold text-lg mb-3 text-amber-400">Your Selections</h2>
+      <div className="text-sm space-y-2">
+        <Row
+          label="Lift"
+          value={lift ? capitalize(lift) : ""}
+          icon={<Dumbbell className="w-4 h-4" />}
+        />
+        <Row
+          label="1RM"
+          value={lift && oneRMs[lift] > 0 ? `${oneRMs[lift]} kg` : ""}
+          icon={<Weight className="w-4 h-4" />}
+        />
+        <Row
+          label="Plates"
+          value={selectedPlates}
+          icon={<Layers className="w-4 h-4" />}
+        />
+        <Row
+          label="Intensity"
+          value={intensity ? capitalize(intensity) : ""}
+          icon={<Gauge className="w-4 h-4" />}
+        />
+        <Row
+          label="Method"
+          value={method ? formatMethod(method) : ""}
+          icon={<Target className="w-4 h-4" />}
+        />
+        <Row
+          label="Work Set"
+          value={
+            workSets[0]?.weight > 0 && workSets[0]?.reps > 0
+              ? `${workSets[0].weight} kg x ${workSets[0].reps}`
+              : ""
+          }
+          icon={<Dumbbell className="w-4 h-4" />}
+        />
       </div>
     </div>
   );
