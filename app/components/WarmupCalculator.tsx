@@ -150,8 +150,9 @@ export default function WarmupCalculatorGuided() {
         Tokens left: {MAX_FREE_TOKENS - tokensUsed}
       </div>
 
-      {/* Main Card */}
-      <div className="w-full max-w-full sm:max-w-md px-2">
+      {/* Card + Summary Wrapper */}
+      <div className="w-full max-w-full sm:max-w-md px-2 flex flex-col items-center">
+        {/* Main Card */}
         <Card
           ref={cardRef}
           className="w-full bg-neutral-900/80 backdrop-blur-lg border border-neutral-700 shadow-2xl rounded-3xl overflow-visible relative z-10"
@@ -219,8 +220,24 @@ export default function WarmupCalculatorGuided() {
           </CardContent>
         </Card>
 
-        {/* Summary below card on screens <1200px */}
-        <div className="xl:hidden mt-4 w-full">
+        {/* Summary below card on mobile, only if step !== 6 */}
+        {step !== 6 && (
+          <div className="xl:hidden mt-4 w-full">
+            <SelectionsSummary
+              lift={lift}
+              oneRMs={oneRMs}
+              plates={plates}
+              intensity={intensity}
+              method={method}
+              workSets={workSets}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Summary top-left on desktop (≥1200px), only if step !== 6 */}
+      {step !== 6 && (
+        <div className="hidden xl:block absolute top-4 left-4 w-[300px] max-w-[90vw]">
           <SelectionsSummary
             lift={lift}
             oneRMs={oneRMs}
@@ -230,19 +247,7 @@ export default function WarmupCalculatorGuided() {
             workSets={workSets}
           />
         </div>
-      </div>
-
-      {/* Summary top-left on screens ≥1200px */}
-      <div className="hidden xl:block absolute top-4 left-4 w-[300px] max-w-[90vw]">
-        <SelectionsSummary
-          lift={lift}
-          oneRMs={oneRMs}
-          plates={plates}
-          intensity={intensity}
-          method={method}
-          workSets={workSets}
-        />
-      </div>
+      )}
 
       {/* Progress bar */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-neutral-800">

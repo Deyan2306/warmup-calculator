@@ -80,7 +80,7 @@ export default function SelectionsSummary({
   }
 
   return (
-    <div className="bg-neutral-800/70 border border-neutral-700 text-white p-4 rounded-xl w-72 shadow-lg">
+    <div className="bg-neutral-800/70 border border-neutral-700 text-white p-4 rounded-xl w-full sm:w-72 max-w-full shadow-lg">
       <h2 className="font-bold text-lg mb-3 text-amber-400">Your Selections</h2>
       <div className="text-sm space-y-2">
         <Row
