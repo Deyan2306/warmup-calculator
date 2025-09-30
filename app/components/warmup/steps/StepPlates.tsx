@@ -2,6 +2,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { gsap } from "gsap";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function StepPlates({
   plates,
@@ -115,6 +116,7 @@ export default function StepPlates({
           onClick={prevStep}
           className="flex-1 py-3 cursor-pointer bg-neutral-800/70 text-amber-400 rounded-lg border border-amber-400/30 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md transition-all duration-300"
         >
+          <ChevronLeft />
           Previous
         </Button>
         <Button
@@ -122,6 +124,7 @@ export default function StepPlates({
           className="flex-1 py-3 cursor-pointer bg-amber-500 hover:bg-neutral-900 border border-amber-400/50 hover:text-amber-400 text-neutral-900 font-bold hover:scale-105 hover:shadow-lg transition-all duration-300"
         >
           Next
+          <ChevronRight />
         </Button>
       </div>
     </div>

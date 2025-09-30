@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lift } from "@/lib/warmup/types";
-import { Info } from "lucide-react";
+import { ChevronLeft, ChevronRight, Info } from "lucide-react";
 import Link from "next/link";
 import { gsap } from "gsap";
 
@@ -88,6 +88,7 @@ export default function StepOneRM({
           onClick={prevStep}
           className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
         >
+          <ChevronLeft />
           Previous
         </Button>
         <Button
@@ -95,6 +96,7 @@ export default function StepOneRM({
           className="flex-1 py-3 bg-amber-500 text-neutral-900 hover:text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg"
         >
           Next
+          <ChevronRight />
         </Button>
       </div>
     </div>

@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Intensity } from "@/lib/warmup/types";
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
-import { Info, Sun, Cloud, Zap } from "lucide-react";
+import { Info, Sun, Cloud, Zap, ChevronLeft } from "lucide-react";
 import { gsap } from "gsap";
 import { JSX } from "react";
 
@@ -168,6 +168,7 @@ export default function StepIntensity({
           onClick={prevStep}
           className="flex-1 py-3 bg-neutral-800/70 cursor-pointer text-amber-400 rounded-lg border border-amber-400/30 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md transition-all duration-300"
         >
+          <ChevronLeft />
           Previous
         </Button>
       </div>

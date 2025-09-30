@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { WarmupMethod } from "@/lib/warmup/types";
 import ConfirmModal from "../../ConfirmModal";
 import { gsap } from "gsap";
+import { ChevronLeft } from "lucide-react";
 
 export default function StepMethod({
   method,
@@ -124,6 +125,7 @@ export default function StepMethod({
         onClick={prevStep}
         className="w-full py-3 bg-neutral-900 hover:bg-neutral-800 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 mt-2 transition-all duration-300 hover:scale-105 hover:shadow-md"
       >
+        <ChevronLeft />
         Previous
       </Button>
     </div>
