@@ -33,7 +33,7 @@ export default function StepResult({
   return (
     <div className="space-y-4">
       <p className="text-neutral-300">
-        Your warm-up plan ({method.toUpperCase()} method):
+        Your warm-up plan (<b>{method.toUpperCase()}</b> method):
       </p>
       <ul className="space-y-2">
         {warmups.map((s, i) => {

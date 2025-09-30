@@ -104,11 +104,6 @@ export default function SelectionsSummary({
           icon={<Gauge className="w-4 h-4" />}
         />
         <Row
-          label="Method"
-          value={method ? formatMethod(method) : ""}
-          icon={<Target className="w-4 h-4" />}
-        />
-        <Row
           label="Work Set"
           value={
             workSets[0]?.weight > 0 && workSets[0]?.reps > 0
@@ -116,6 +111,11 @@ export default function SelectionsSummary({
               : ""
           }
           icon={<Dumbbell className="w-4 h-4" />}
+        />
+        <Row
+          label="Method"
+          value={method ? formatMethod(method) : ""}
+          icon={<Target className="w-4 h-4" />}
         />
       </div>
     </div>
