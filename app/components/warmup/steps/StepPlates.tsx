@@ -14,7 +14,7 @@ export default function StepPlates({
 }) {
   return (
     <div className="space-y-4">
-      <p className="text-neutral-300">Select available plates:</p>
+      <p className="text-neutral-400">Select available plates:</p>
       <div className="flex flex-wrap gap-2">
         {Object.entries(plates)
           .sort(

@@ -58,7 +58,7 @@ export default function StepMethod({
 
   return (
     <div className="space-y-4 relative">
-      <p className="text-neutral-300">
+      <p className="text-neutral-400">
         Select warm-up method (based on your top work set reps: {reps})
       </p>
 

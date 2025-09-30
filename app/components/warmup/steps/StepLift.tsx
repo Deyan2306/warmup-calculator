@@ -58,7 +58,7 @@ export default function StepLift({
 
   return (
     <div className="space-y-4">
-      <p className="text-neutral-300 font-semibold text-lg">Select the lift:</p>
+      <p className="text-neutral-400 font-semibold text-lg">Select the lift:</p>
 
       <div className="flex gap-3" ref={containerRef}>
         {lifts.map((l) => (

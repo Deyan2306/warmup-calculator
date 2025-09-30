@@ -41,7 +41,7 @@ export default function StepOneRM({
   return (
     <div className="space-y-4" ref={containerRef}>
       <div className="flex items-center justify-between relative step-one-child">
-        <p className="text-neutral-300 font-semibold text-lg">
+        <p className="text-neutral-400 font-semibold text-lg">
           Enter your current 1RM for {lift.toUpperCase()}:
         </p>
 

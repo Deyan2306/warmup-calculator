@@ -17,7 +17,7 @@ export default function StepWorkSet({
 }) {
   return (
     <div className="space-y-4">
-      <p className="text-neutral-300">Enter your top work set:</p>
+      <p className="text-neutral-400">Enter your top work set:</p>
       <div className="flex gap-2">
         <Input
           type="text"

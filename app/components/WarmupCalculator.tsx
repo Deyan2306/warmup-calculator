@@ -128,7 +128,7 @@ export default function WarmupCalculatorGuided() {
   if (goToPayment) return <PaymentPage />;
 
   return (
-    <div className="min-h-screen bg-neutral-900 relative flex flex-col items-center justify-start overflow-x-hidden">
+    <div className="min-h-screen bg-neutral-900 p-4 md:p-0 relative flex flex-col items-center justify-start overflow-x-hidden">
       <Toaster position="top-right" richColors />
 
       {/* Navbar */}
@@ -262,8 +262,8 @@ export default function WarmupCalculatorGuided() {
         </div>
       )}
 
-      {/* Progress bar */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-neutral-800">
+      {/* Fixed progress bar at the bottom */}
+      <div className="fixed bottom-0 left-0 w-full h-1 bg-neutral-800 z-50">
         <div
           className="h-1 bg-amber-400 transition-all"
           style={{ width: `${progressPercent}%` }}
