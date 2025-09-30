@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import gsap from "gsap";
+import Image from "next/image";
 
 export default function LandingPage() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -11,6 +12,7 @@ export default function LandingPage() {
   const featureRefs = useRef<HTMLDivElement[]>([]);
   const heroTitleRef = useRef<HTMLHeadingElement>(null);
   const heroTextRef = useRef<HTMLParagraphElement>(null);
+  const heroLogoRef = useRef<HTMLImageElement>(null);
   const heroButtonRef = useRef<HTMLButtonElement>(null);
   const ctaSectionRef = useRef<HTMLDivElement>(null);
   const ctaButtonRef = useRef<HTMLButtonElement>(null);
@@ -32,24 +34,14 @@ export default function LandingPage() {
   };
 
   useEffect(() => {
-    // Debug logging to verify refs
-    console.log("heroTitleRef:", heroTitleRef.current);
-    console.log("heroTextRef:", heroTextRef.current);
-    console.log("heroButtonRef:", heroButtonRef.current);
-    console.log("containerRef:", containerRef.current);
-    console.log("notificationsRef:", notificationsRef.current);
-    console.log("featureRefs:", featureRefs.current);
-    console.log("ctaSectionRef:", ctaSectionRef.current);
-    console.log("ctaButtonRef:", ctaButtonRef.current);
-
     const tl = gsap.timeline();
 
     // Hero animations
-    if (heroTitleRef.current) {
+    if (heroTitleRef.current && heroLogoRef.current) {
       tl.fromTo(
-        heroTitleRef.current,
+        [heroTitleRef.current, heroLogoRef.current],
         { x: -50, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1, ease: "back.out(1.5)" }
+        { x: 0, opacity: 1, duration: 1, ease: "back.out(1.5)", stagger: 0.1 }
       );
     }
     if (heroTextRef.current) {
@@ -157,29 +149,45 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative z-10 flex flex-col md:flex-row items-center max-w-6xl w-full mt-10 md:mt-0">
         {/* Left Content */}
-        <div className="md:w-1/2 flex flex-col items-start text-left space-y-6">
-          <h1
-            ref={heroTitleRef}
-            className="text-6xl md:text-7xl font-extrabold text-amber-400 drop-shadow-lg"
-          >
-            PreppedUp
-          </h1>
+        <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-6">
+          {/* Logo + Text */}
+          <div className="flex flex-col items-center md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0">
+            <div ref={heroLogoRef}>
+              <Image
+                src="/pumped-up-logo.png"
+                alt="PreppedUp Logo"
+                width={180}
+                height={180}
+                className="drop-shadow-lg w-auto h-32 md:h-40"
+              />
+            </div>
+            <h1
+              ref={heroTitleRef}
+              className="text-5xl md:text-7xl font-extrabold text-amber-400 drop-shadow-lg"
+            >
+              PreppedUp
+            </h1>
+          </div>
+
           <p
             ref={heroTextRef}
-            className="text-amber-200 text-lg md:text-xl drop-shadow"
+            className="text-amber-200 text-lg md:text-xl drop-shadow max-w-md"
           >
             Strong Lifts Start With Strong Warm-ups. Stop wasting reps and
             leaving PRs on the bar. PreppedUp generates personalized warm-ups so
             you lift smarter, faster, and safer.
           </p>
-          <Link href="/create-warmup">
-            <Button
-              ref={heroButtonRef}
-              className="px-12 py-5 bg-amber-400 text-neutral-900 font-bold rounded-3xl hover:bg-amber-500 transform hover:cursor-pointer hover:scale-105 transition shadow-lg"
-            >
-              Get Started
-            </Button>
-          </Link>
+
+          <div className="w-full flex justify-center md:justify-start">
+            <Link href="/create-warmup">
+              <Button
+                ref={heroButtonRef}
+                className="px-12 py-5 bg-amber-400 text-neutral-900 font-bold rounded-3xl hover:bg-amber-500 transform hover:cursor-pointer hover:scale-105 transition shadow-lg"
+              >
+                Get Started
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Right Visual */}
