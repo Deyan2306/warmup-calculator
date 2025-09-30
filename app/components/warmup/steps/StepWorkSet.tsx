@@ -1,6 +1,8 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { gsap } from "gsap";
 
 export default function StepWorkSet({
   workSets,
@@ -15,10 +17,31 @@ export default function StepWorkSet({
   nextStep: () => void;
   prevStep: () => void;
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from(".step-workset-child", {
+        y: 20,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 0.5,
+        ease: "power3.out",
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="space-y-4">
-      <p className="text-neutral-400">Enter your top work set:</p>
-      <div className="flex gap-2">
+    <div className="space-y-4" ref={containerRef}>
+      <p className="text-neutral-400 step-workset-child">
+        Enter your top work set:
+      </p>
+
+      <div className="flex gap-2 step-workset-child">
         <Input
           type="text"
           value={workSets[0]?.weight || ""}
@@ -28,7 +51,13 @@ export default function StepWorkSet({
             ])
           }
           placeholder="Weight"
-          className="bg-neutral-900/50 text-amber-400 border border-neutral-700 rounded-lg px-3 py-2"
+          className="
+            bg-neutral-800 text-amber-400 border border-amber-400
+            rounded-lg px-3 py-3
+            focus:ring-2 focus:ring-amber-400
+            transition-all duration-300
+            hover:scale-105 hover:shadow-md
+          "
         />
         <Input
           type="text"
@@ -39,19 +68,26 @@ export default function StepWorkSet({
             ])
           }
           placeholder="Reps"
-          className="bg-neutral-900/50 text-amber-400 border border-neutral-700 rounded-lg px-3 py-2 w-24"
+          className="
+            bg-neutral-800 text-amber-400 border border-amber-400
+            rounded-lg px-3 py-3 w-24
+            focus:ring-2 focus:ring-amber-400
+            transition-all duration-300
+            hover:scale-105 hover:shadow-md
+          "
         />
       </div>
-      <div className="flex gap-2">
+
+      <div className="flex gap-3 step-workset-child">
         <Button
           onClick={prevStep}
-          className="flex-1 py-2 bg-neutral-900 hover:bg-neutral-800 text-amber-400 cursor-pointer rounded-lg border border-neutral-700"
+          className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
         >
           Previous
         </Button>
         <Button
           onClick={nextStep}
-          className="flex-1 py-2 bg-neutral-900 hover:bg-neutral-800 text-amber-400 cursor-pointer rounded-lg border border-neutral-700"
+          className="flex-1 py-3 bg-amber-500 text-neutral-900 hover:text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg"
         >
           Next
         </Button>
