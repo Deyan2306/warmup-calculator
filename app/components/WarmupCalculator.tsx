@@ -5,6 +5,8 @@ import { gsap } from "gsap";
 import { Toaster } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
 import PaymentPage from "./PaymentPage";
+import Image from "next/image";
+import Link from "next/link";
 
 import { Lift, Intensity, WarmupMethod, WarmupSet } from "@/lib/warmup/types";
 import { computeWarmups } from "@/lib/warmup/computeWarmups";
@@ -126,8 +128,24 @@ export default function WarmupCalculatorGuided() {
   if (goToPayment) return <PaymentPage />;
 
   return (
-    <div className="min-h-screen bg-neutral-900 relative flex flex-col items-center justify-center p-4 overflow-x-hidden">
+    <div className="min-h-screen bg-neutral-900 relative flex flex-col items-center justify-start overflow-x-hidden">
       <Toaster position="top-right" richColors />
+
+      {/* Navbar */}
+      <header className="w-full flex items-center justify-center xl:justify-start h-16 px-4 mb-6">
+        <Link href="/">
+          <div className="h-full relative w-auto cursor-pointer">
+            <Image
+              width={86}
+              height={86}
+              src="/pumped-up-logo.png"
+              alt="Pumped Up Logo"
+              className="h-full w-auto"
+              priority
+            />
+          </div>
+        </Link>
+      </header>
 
       {confirmMethod && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
@@ -145,13 +163,8 @@ export default function WarmupCalculatorGuided() {
         </div>
       )}
 
-      {/* Tokens tracker */}
-      <div className="absolute top-4 right-4 bg-neutral-800/60 border border-neutral-700 px-3 py-2 rounded-xl text-amber-400 font-semibold z-20 max-w-[90vw] truncate">
-        Tokens left: {MAX_FREE_TOKENS - tokensUsed}
-      </div>
-
       {/* Card + Summary Wrapper */}
-      <div className="w-full max-w-full sm:max-w-md px-2 flex flex-col items-center">
+      <div className="flex-1 w-full max-w-full sm:max-w-md px-2 flex flex-col items-center justify-center">
         {/* Main Card */}
         <Card
           ref={cardRef}
@@ -220,9 +233,9 @@ export default function WarmupCalculatorGuided() {
           </CardContent>
         </Card>
 
-        {/* Summary below card on mobile, only if step !== 6 */}
+        {/* Summary below card on mobile */}
         {step !== 6 && (
-          <div className="xl:hidden mt-4 w-full">
+          <div className="xl:hidden mt-6 w-full">
             <SelectionsSummary
               lift={lift}
               oneRMs={oneRMs}
@@ -235,9 +248,9 @@ export default function WarmupCalculatorGuided() {
         )}
       </div>
 
-      {/* Summary top-left on desktop (≥1200px), only if step !== 6 */}
+      {/* Summary top-left on desktop */}
       {step !== 6 && (
-        <div className="hidden xl:block absolute top-4 left-4 w-[300px] max-w-[90vw]">
+        <div className="hidden xl:block absolute top-20 left-4 w-[300px] max-w-[90vw]">
           <SelectionsSummary
             lift={lift}
             oneRMs={oneRMs}
