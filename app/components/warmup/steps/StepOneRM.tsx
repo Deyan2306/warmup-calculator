@@ -92,7 +92,7 @@ export default function StepOneRM({
         </Button>
         <Button
           onClick={nextStep}
-          className="flex-1 py-3 bg-amber-500 text-neutral-900 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+          className="flex-1 py-3 bg-amber-500 text-neutral-900 hover:text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg"
         >
           Next
         </Button>

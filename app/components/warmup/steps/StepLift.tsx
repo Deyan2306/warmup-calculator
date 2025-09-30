@@ -44,17 +44,20 @@ export default function StepLift({
   ];
 
   useEffect(() => {
-    if (containerRef.current) {
-      // Animate the wrapper div instead of individual buttons
-      gsap.from(containerRef.current.children, {
+    if (!containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from(containerRef.current!.children, {
         y: 20,
         opacity: 0,
         stagger: 0.1,
         duration: 0.5,
         ease: "power3.out",
       });
-    }
-  }, [containerRef.current]); // Run whenever container mounts
+    }, containerRef);
+
+    return () => ctx.revert(); // cleanup
+  }, []); // run once on mount
 
   return (
     <div className="space-y-4">
@@ -69,13 +72,13 @@ export default function StepLift({
                 nextStep();
               }}
               className={`
-              w-full py-3 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 transform flex items-center justify-center gap-2
-              ${
-                lift === l.type
-                  ? "bg-amber-500 text-neutral-900 scale-105 shadow-lg"
-                  : "bg-neutral-800/70 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md"
-              }
-            `}
+                w-full py-3 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 transform flex items-center justify-center gap-2
+                ${
+                  lift === l.type
+                    ? "bg-amber-500 text-neutral-900 scale-105 shadow-lg"
+                    : "bg-neutral-800/70 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md"
+                }
+              `}
             >
               {l.icon}
               <span>{l.type.charAt(0).toUpperCase() + l.type.slice(1)}</span>
