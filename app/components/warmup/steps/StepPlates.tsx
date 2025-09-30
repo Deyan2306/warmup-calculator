@@ -96,7 +96,7 @@ export default function StepPlates({
                 className={`px-4 py-2 cursor-pointer rounded-full border transition-all duration-300 transform
                   ${
                     v
-                      ? "bg-amber-500 text-neutral-900 border-amber-400/70 scale-105 shadow-lg"
+                      ? "bg-amber-500 text-neutral-900 hover:text-amber-400 border-amber-400/70 scale-105 shadow-lg"
                       : "bg-neutral-800/70 text-amber-400 border-amber-400/30 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md"
                   }`}
               >
@@ -113,13 +113,13 @@ export default function StepPlates({
       >
         <Button
           onClick={prevStep}
-          className="flex-1 py-3 bg-neutral-800/70 text-amber-400 rounded-lg border border-amber-400/30 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md transition-all duration-300"
+          className="flex-1 py-3 cursor-pointer bg-neutral-800/70 text-amber-400 rounded-lg border border-amber-400/30 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md transition-all duration-300"
         >
           Previous
         </Button>
         <Button
           onClick={nextStep}
-          className="flex-1 py-3 bg-amber-500 text-neutral-900 font-bold rounded-lg hover:bg-amber-600 hover:scale-105 hover:shadow-lg transition-all duration-300"
+          className="flex-1 py-3 cursor-pointer bg-amber-500 hover:bg-neutral-900 border border-amber-400/50 hover:text-amber-400 text-neutral-900 font-bold hover:scale-105 hover:shadow-lg transition-all duration-300"
         >
           Next
         </Button>
