@@ -137,7 +137,7 @@ export default function StepIntensity({
       {/* Intensity buttons */}
       <div
         ref={buttonsRef}
-        className="flex flex-col md:flex-row gap-3 justify-center md:justify-start"
+        className="flex flex-row gap-3 justify-center" // <-- fixed
       >
         {(["light", "medium", "heavy"] as Intensity[]).map((i) => (
           <Button
@@ -162,7 +162,7 @@ export default function StepIntensity({
       {/* Navigation buttons */}
       <div
         ref={navRef}
-        className="flex flex-col md:flex-row gap-3 justify-center md:justify-start"
+        className="flex flex-row gap-3 justify-center" // <-- fixed, keep horizontal
       >
         <Button
           onClick={prevStep}

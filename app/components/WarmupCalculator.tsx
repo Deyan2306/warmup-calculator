@@ -71,6 +71,7 @@ export default function WarmupCalculatorGuided() {
   const totalSteps = 6;
   const progressPercent = (step / totalSteps) * 100;
 
+  // Set lift from URL param
   useEffect(() => {
     if (liftParam) {
       setLift(liftParam);
@@ -78,6 +79,7 @@ export default function WarmupCalculatorGuided() {
     }
   }, [liftParam]);
 
+  // Animate card on step change
   useEffect(() => {
     if (!cardRef.current) return;
     gsap.fromTo(
@@ -87,6 +89,7 @@ export default function WarmupCalculatorGuided() {
     );
   }, [step]);
 
+  // Animate summary panels
   useEffect(() => {
     const animate = (el: HTMLDivElement | null) => {
       if (!el) return;
@@ -96,7 +99,6 @@ export default function WarmupCalculatorGuided() {
         { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
       );
     };
-
     animate(summaryMobileRef.current);
     animate(summaryDesktopRef.current);
   }, [step]);
@@ -114,8 +116,7 @@ export default function WarmupCalculatorGuided() {
       setGoToPayment(true);
       return;
     }
-    if (step === 5) generateWarmup();
-    else setStep(step + 1);
+    if (step < 5) setStep(step + 1);
   }
 
   function prevStep() {
@@ -123,7 +124,7 @@ export default function WarmupCalculatorGuided() {
   }
 
   function generateWarmup() {
-    if (!method) return setStep(4);
+    if (!method) return; // only proceed if method is selected
 
     const targetWeightKg = workSets[0]?.weight || 0;
     const targetReps = workSets[0]?.reps || 0;
@@ -136,11 +137,19 @@ export default function WarmupCalculatorGuided() {
       platesAvailable,
       method,
     });
+
     setWarmups(sets);
     setStep(6);
     setTokensUsed(tokensUsed + 1);
     if (tokensUsed + 1 >= MAX_FREE_TOKENS) setGoToPayment(true);
   }
+
+  // Automatically generate warmup when method is selected
+  useEffect(() => {
+    if (step === 5 && method) {
+      generateWarmup();
+    }
+  }, [method, step]);
 
   if (goToPayment) return <PaymentPage />;
 
@@ -164,6 +173,7 @@ export default function WarmupCalculatorGuided() {
         </Link>
       </header>
 
+      {/* Confirmation Modal */}
       {confirmMethod && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
           <ConfirmModal
@@ -172,7 +182,6 @@ export default function WarmupCalculatorGuided() {
               if (confirmMethod) {
                 setMethod(confirmMethod);
                 setConfirmMethod(null);
-                nextStep();
               }
             }}
             onCancel={() => setConfirmMethod(null)}
@@ -180,9 +189,8 @@ export default function WarmupCalculatorGuided() {
         </div>
       )}
 
-      {/* Card + Summary Wrapper */}
+      {/* Card + Summary */}
       <div className="flex-1 w-full max-w-full sm:max-w-md px-2 flex flex-col items-center justify-center">
-        {/* Main Card */}
         <Card
           ref={cardRef}
           className="w-full bg-neutral-900/80 backdrop-blur-lg border border-neutral-700 shadow-2xl rounded-3xl overflow-visible relative z-10"
@@ -232,7 +240,7 @@ export default function WarmupCalculatorGuided() {
               <StepMethod
                 method={method}
                 setMethod={setMethod}
-                nextStep={nextStep}
+                nextStep={nextStep} // will no longer be used inside StepMethod
                 prevStep={prevStep}
                 reps={workSets[0]?.reps || 0}
                 suggestedMethods={getSuggestedMethods(workSets[0]?.reps || 0)}
@@ -250,7 +258,7 @@ export default function WarmupCalculatorGuided() {
           </CardContent>
         </Card>
 
-        {/* Summary below card on mobile */}
+        {/* Mobile Summary */}
         {step !== 6 && (
           <div className="xl:hidden mt-6 w-full" ref={summaryMobileRef}>
             <SelectionsSummary
@@ -265,7 +273,7 @@ export default function WarmupCalculatorGuided() {
         )}
       </div>
 
-      {/* Summary top-left on desktop */}
+      {/* Desktop Summary */}
       {step !== 6 && (
         <div
           className="hidden xl:block absolute top-20 left-4 w-[300px] max-w-[90vw]"
@@ -282,7 +290,7 @@ export default function WarmupCalculatorGuided() {
         </div>
       )}
 
-      {/* Fixed progress bar at the bottom */}
+      {/* Progress Bar */}
       <div className="fixed bottom-0 left-0 w-full h-1 bg-neutral-800 z-50">
         <div
           className="h-1 bg-amber-400 transition-all"

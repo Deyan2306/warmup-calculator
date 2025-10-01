@@ -108,10 +108,7 @@ export default function StepPlates({
       </div>
 
       {/* Navigation Buttons */}
-      <div
-        ref={navRef}
-        className="flex flex-col md:flex-row gap-3 justify-center md:justify-start"
-      >
+      <div ref={navRef} className="flex flex-row gap-3 justify-center">
         <Button
           onClick={prevStep}
           className="flex-1 py-3 cursor-pointer bg-neutral-800/70 text-amber-400 rounded-lg border border-amber-400/30 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md transition-all duration-300"

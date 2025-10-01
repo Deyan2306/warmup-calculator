@@ -2,7 +2,6 @@
 import { useLayoutEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { WarmupMethod } from "@/lib/warmup/types";
-import ConfirmModal from "../../ConfirmModal";
 import { gsap } from "gsap";
 import { ChevronLeft } from "lucide-react";
 
@@ -57,9 +56,14 @@ export default function StepMethod({
   }, {} as Record<WarmupMethod, { score: number; suggested: boolean }>);
 
   const handleClick = (m: WarmupMethod, suggested: boolean) => {
-    if (!suggested) setConfirmMethod(m);
-    setMethod(m);
-    nextStep();
+    if (!suggested) {
+      // Show confirmation modal first
+      setConfirmMethod(m);
+    } else {
+      // Suggested method -> set method first, then move forward
+      setMethod(m);
+      setTimeout(() => nextStep(), 0);
+    }
   };
 
   // Animate buttons after DOM is ready
@@ -85,6 +89,7 @@ export default function StepMethod({
         Select warm-up method (based on your top work set reps: {reps})
       </p>
 
+      {/* Method buttons */}
       <div className="flex flex-col gap-2" ref={containerRef}>
         {allMethods.map((m) => {
           const { score, suggested } = methodScores[m];
@@ -121,6 +126,7 @@ export default function StepMethod({
         })}
       </div>
 
+      {/* Previous button */}
       <Button
         onClick={prevStep}
         className="w-full py-3 bg-neutral-900 hover:bg-neutral-800 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 mt-2 transition-all duration-300 hover:scale-105 hover:shadow-md"
