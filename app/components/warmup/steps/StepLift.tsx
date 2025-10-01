@@ -1,9 +1,11 @@
 "use client";
+
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Lift } from "@/lib/warmup/types";
 import { gsap } from "gsap";
 import { JSX } from "react";
+import Image from "next/image";
 
 export default function StepLift({
   lift,
@@ -20,25 +22,37 @@ export default function StepLift({
     {
       type: "squat",
       icon: (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M10 2a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0V8H6a1 1 0 110-2h3V3a1 1 0 011-1z" />
-        </svg>
+        <Image
+          src="/sbd/squat.webp"
+          alt="Squat"
+          width={24}
+          height={24}
+          className="object-contain"
+        />
       ),
     },
     {
       type: "bench",
       icon: (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M2 12h16v2H2v-2zM4 8h12v2H4V8z" />
-        </svg>
+        <Image
+          src="/sbd/bench.webp"
+          alt="Bench"
+          width={24}
+          height={24}
+          className="object-contain"
+        />
       ),
     },
     {
       type: "deadlift",
       icon: (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M5 2h10v2H5V2zM3 10h14v2H3v-2z" />
-        </svg>
+        <Image
+          src="/sbd/deadlift.webp"
+          alt="Deadlift"
+          width={24}
+          height={24}
+          className="object-contain"
+        />
       ),
     },
   ];

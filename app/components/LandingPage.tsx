@@ -141,7 +141,7 @@ export default function LandingPage() {
   return (
     <div
       className="relative min-h-screen bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center px-6 text-center"
-      style={{ backgroundImage: "url('/landing-page-bg.jpg')" }}
+      style={{ backgroundImage: "url('/landing-page-bg.avif')" }}
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-neutral-900/30 z-0"></div>
@@ -154,7 +154,7 @@ export default function LandingPage() {
           <div className="flex flex-col items-center md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0">
             <div ref={heroLogoRef}>
               <Image
-                src="/pumped-up-logo.png"
+                src="/pumped-up-logo.webp"
                 alt="PreppedUp Logo"
                 width={180}
                 height={180}
