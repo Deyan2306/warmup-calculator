@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Here’s an updated **README** with the app icon next to the header name and an expanded **Tech Stack** section:
 
-## Getting Started
+---
 
-First, run the development server:
+# <img src="./public/pumped-up-logo.webp" width="36" height="36" style="vertical-align: middle" /> PreppedUp
+
+**PreppedUp** is your ultimate **Powerlifting Warm-Up Generator**—built to make every training session safer, smarter, and more effective. Whether you’re squatting, benching, or deadlifting, PreppedUp designs a personalized warm-up plan so you can focus on lifting heavy and hitting your PRs.
+
+This is a **SaaS application** built with modern web tech: **TypeScript, JavaScript, Next.js**, and **shadcn/ui** for a clean, interactive interface. It’s deployed and running smoothly on **Vercel**, so you can get started instantly.
+
+---
+
+## Features ✨
+
+- **Step-by-step warm-up generator** for Squat, Bench, and Deadlift
+- **Dynamic intensity selection** to match your session goals
+- **Custom plate selection** for exact warm-up calculations
+- **One-rep max input** to personalize your warm-up load
+- **Interactive, animated UI** powered by GSAP and shadcn/ui
+- **Mobile and desktop-friendly design**
+- **Freemium tokens system** for limited free warm-ups
+
+---
+
+## Tech Stack 🛠️
+
+PreppedUp leverages modern, high-performance technologies for both front-end and back-end development:
+
+- **Frontend**
+
+  - **Next.js** – Fast React framework with server-side rendering
+  - **React** – Component-based UI
+  - **TypeScript** – Type-safe, maintainable code
+  - **JavaScript** – Client-side interactivity
+  - **shadcn/ui** – Accessible and customizable UI components
+  - **GSAP** – Smooth, performant animations
+
+- **Backend & Deployment**
+
+  - **Next.js API routes** – Lightweight serverless backend
+  - **Vercel** – Hosting and continuous deployment
+
+- **Assets & Media**
+
+  - **pumped-up-logo.webp** – App icon
+  - **TailwindCSS** – Utility-first styling
+
+---
+
+## Getting Started 🚀
+
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/your-username/preppedup.git
+cd preppedup
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the app in action.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deployment 🌐
 
-## Learn More
+PreppedUp is deployed on **Vercel**. You can access it instantly at:
 
-To learn more about Next.js, take a look at the following resources:
+```
+https://preppedup.vercel.app
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Contributing 🤝
 
-## Deploy on Vercel
+Want to help make PreppedUp even better? Contributions are welcome!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Fork the repository
+2. Create a new branch: `git checkout -b feature/YourFeature`
+3. Make your changes and commit: `git commit -m 'Add some feature'`
+4. Push to your branch: `git push origin feature/YourFeature`
+5. Open a Pull Request
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## License 📝
+
+PreppedUp is **MIT licensed**. See `LICENSE` for details.
+
+---
+
+## Screenshots 📸
+
+![PreppedUp Screenshot](./public/pumped-up-logo.webp)
+
+---
+
+> PreppedUp is designed to make **your preparation as awesome as your lifts**. Never skip your warm-up again! 💪🔥
+
+---
+
+If you want, I can make a **version with badges for technologies, license, Vercel deployment, and NPM version**, which will make it look super professional on GitHub.
+
+Do you want me to do that next?
