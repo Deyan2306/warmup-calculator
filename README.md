@@ -1,7 +1,3 @@
-Here’s an updated **README** with the app icon next to the header name and an expanded **Tech Stack** section:
-
----
-
 # <img src="./public/pumped-up-logo.webp" width="36" height="36" style="vertical-align: middle" /> PreppedUp
 
 **PreppedUp** is your ultimate **Powerlifting Warm-Up Generator**—built to make every training session safer, smarter, and more effective. Whether you’re squatting, benching, or deadlifting, PreppedUp designs a personalized warm-up plan so you can focus on lifting heavy and hitting your PRs.
@@ -102,9 +98,3 @@ PreppedUp is **MIT licensed**. See `LICENSE` for details.
 ---
 
 > PreppedUp is designed to make **your preparation as awesome as your lifts**. Never skip your warm-up again! 💪🔥
-
----
-
-If you want, I can make a **version with badges for technologies, license, Vercel deployment, and NPM version**, which will make it look super professional on GitHub.
-
-Do you want me to do that next?
