@@ -2,13 +2,16 @@
 
 import React from "react";
 import CalculateOneRepMax from "../components/warmup/steps/CalculateOneRepMax";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
 const Page = () => {
   return (
     <div>
-      <CalculateOneRepMax />
+      <Suspense fallback={<div>Loading...</div>}>
+        <CalculateOneRepMax />
+      </Suspense>
     </div>
   );
 };
