@@ -9,18 +9,25 @@ import { gsap } from "gsap";
 
 export default function StepOneRM({
   lift,
+  setLift,
   oneRMs,
   setOneRMs,
   nextStep,
   prevStep,
 }: {
   lift: Lift;
+  setLift: React.Dispatch<React.SetStateAction<Lift | undefined>>;
   oneRMs: Record<Lift, number>;
   setOneRMs: React.Dispatch<React.SetStateAction<Record<Lift, number>>>;
   nextStep: () => void;
   prevStep: () => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const handlePrevClick = () => {
+    setLift(undefined); // reset lift when going back
+    prevStep();
+  };
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -35,7 +42,7 @@ export default function StepOneRM({
       });
     }, containerRef);
 
-    return () => ctx.revert(); // cleanup on unmount
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -57,7 +64,7 @@ export default function StepOneRM({
             <Info className="h-5 w-5" />
           </Button>
 
-          <span className="absolute z-50 -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-neutral-300 bg-neutral-900 border border-neutral-700 px-2 py-1 rounded-md opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
+          <span className="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-neutral-300 bg-neutral-900 border border-neutral-700 px-2 py-1 rounded-md opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-50">
             Calculate your one rep max
           </span>
         </Link>
@@ -85,7 +92,7 @@ export default function StepOneRM({
 
       <div className="flex gap-3 step-one-child">
         <Button
-          onClick={prevStep}
+          onClick={handlePrevClick}
           className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
         >
           <ChevronLeft />

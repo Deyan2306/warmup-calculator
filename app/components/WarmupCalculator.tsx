@@ -120,11 +120,14 @@ export default function WarmupCalculatorGuided() {
   }
 
   function prevStep() {
+    if (step === 1) {
+      setLift(undefined);
+    }
     if (step > 0) setStep(step - 1);
   }
 
   function generateWarmup() {
-    if (!method) return; // only proceed if method is selected
+    if (!method) return;
 
     const targetWeightKg = workSets[0]?.weight || 0;
     const targetReps = workSets[0]?.reps || 0;
@@ -132,7 +135,7 @@ export default function WarmupCalculatorGuided() {
     const sets = computeWarmups({
       targetWeightKg,
       targetReps,
-      lift,
+      lift: lift ?? undefined,
       intensity,
       platesAvailable,
       method,
@@ -206,6 +209,7 @@ export default function WarmupCalculatorGuided() {
             {step === 1 && lift && (
               <StepOneRM
                 lift={lift}
+                setLift={setLift}
                 oneRMs={oneRMs}
                 setOneRMs={setOneRMs}
                 nextStep={nextStep}
@@ -240,7 +244,7 @@ export default function WarmupCalculatorGuided() {
               <StepMethod
                 method={method}
                 setMethod={setMethod}
-                nextStep={nextStep} // will no longer be used inside StepMethod
+                nextStep={nextStep}
                 prevStep={prevStep}
                 reps={workSets[0]?.reps || 0}
                 suggestedMethods={getSuggestedMethods(workSets[0]?.reps || 0)}
