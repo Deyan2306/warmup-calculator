@@ -1,4 +1,5 @@
 "use client";
+
 import { useLayoutEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { gsap } from "gsap";
@@ -65,7 +66,7 @@ export default function StepPlates({
     });
 
     return () => cancelAnimationFrame(id);
-  }, []); // <-- empty dependency array = run only once on mount
+  }, []);
 
   return (
     <div className="space-y-6">

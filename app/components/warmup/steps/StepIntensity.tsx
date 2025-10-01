@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { Intensity } from "@/lib/warmup/types";
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
@@ -135,10 +136,7 @@ export default function StepIntensity({
       )}
 
       {/* Intensity buttons */}
-      <div
-        ref={buttonsRef}
-        className="flex flex-row gap-3 justify-center" // <-- fixed
-      >
+      <div ref={buttonsRef} className="flex flex-row gap-3 justify-center">
         {(["light", "medium", "heavy"] as Intensity[]).map((i) => (
           <Button
             key={i}
@@ -160,10 +158,7 @@ export default function StepIntensity({
       </div>
 
       {/* Navigation buttons */}
-      <div
-        ref={navRef}
-        className="flex flex-row gap-3 justify-center" // <-- fixed, keep horizontal
-      >
+      <div ref={navRef} className="flex flex-row gap-3 justify-center">
         <Button
           onClick={prevStep}
           className="flex-1 py-3 bg-neutral-800/70 cursor-pointer text-amber-400 rounded-lg border border-amber-400/30 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md transition-all duration-300"

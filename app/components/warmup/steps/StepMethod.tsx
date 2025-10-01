@@ -1,4 +1,5 @@
 "use client";
+
 import { useLayoutEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { WarmupMethod } from "@/lib/warmup/types";

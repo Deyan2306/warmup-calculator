@@ -123,6 +123,11 @@ export default function WarmupCalculatorGuided() {
     if (step === 1) {
       setLift(undefined);
     }
+
+    if (step === 3) {
+      setIntensity(undefined);
+    }
+
     if (step > 0) setStep(step - 1);
   }
 
