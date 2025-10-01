@@ -222,7 +222,6 @@ export default function WarmupCalculatorGuided() {
                 setPlates={setPlates}
                 nextStep={nextStep}
                 prevStep={prevStep}
-                setOneRMs={setOneRMs}
               />
             )}
             {step === 3 && (

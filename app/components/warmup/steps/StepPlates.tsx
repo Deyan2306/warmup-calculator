@@ -3,20 +3,17 @@ import { useLayoutEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { gsap } from "gsap";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Lift } from "@/lib/warmup/types";
 
 export default function StepPlates({
   plates,
   setPlates,
   nextStep,
   prevStep,
-  setOneRMs, // new prop
 }: {
   plates: Record<string, boolean>;
   setPlates: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
   nextStep: () => void;
   prevStep: () => void;
-  setOneRMs: React.Dispatch<React.SetStateAction<Record<Lift, number>>>; // typed
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
@@ -68,17 +65,7 @@ export default function StepPlates({
     });
 
     return () => cancelAnimationFrame(id);
-  }, []); // run only once on mount
-
-  const handlePrev = () => {
-    // reset 1RMs when going back
-    setOneRMs({
-      squat: 0,
-      bench: 0,
-      deadlift: 0,
-    });
-    prevStep();
-  };
+  }, []); // <-- empty dependency array = run only once on mount
 
   return (
     <div className="space-y-6">
@@ -121,9 +108,12 @@ export default function StepPlates({
       </div>
 
       {/* Navigation Buttons */}
-      <div ref={navRef} className="flex flex-row gap-3 justify-center">
+      <div
+        ref={navRef}
+        className="flex flex-col md:flex-row gap-3 justify-center md:justify-start"
+      >
         <Button
-          onClick={handlePrev}
+          onClick={prevStep}
           className="flex-1 py-3 cursor-pointer bg-neutral-800/70 text-amber-400 rounded-lg border border-amber-400/30 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md transition-all duration-300"
         >
           <ChevronLeft />
