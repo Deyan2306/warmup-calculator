@@ -111,7 +111,7 @@ export default function StepPlates({
       {/* Navigation Buttons */}
       <div
         ref={navRef}
-        className="flex flex-col md:flex-row gap-3 justify-center md:justify-start"
+        className="flex flex-row gap-3 justify-center md:justify-start"
       >
         <Button
           onClick={prevStep}
