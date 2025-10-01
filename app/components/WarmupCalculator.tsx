@@ -172,7 +172,7 @@ export default function WarmupCalculatorGuided() {
             <Image
               width={86}
               height={86}
-              src="/pumped-up-logo.png"
+              src="/pumped-up-logo.webp"
               alt="Pumped Up Logo"
               className="h-full w-auto"
               priority
