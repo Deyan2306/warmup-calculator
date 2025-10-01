@@ -100,7 +100,7 @@ export default function StepIntensity({
   }, [showInfo]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-md mx-auto w-full">
       {/* Title */}
       <div ref={titleRef} className="flex items-center gap-2">
         <p className="text-neutral-400 font-semibold text-lg">
@@ -136,7 +136,7 @@ export default function StepIntensity({
       )}
 
       {/* Intensity buttons */}
-      <div ref={buttonsRef} className="flex flex-row gap-3 justify-center">
+      <div ref={buttonsRef} className="grid grid-cols-3 w-full gap-3">
         {(["light", "medium", "heavy"] as Intensity[]).map((i) => (
           <Button
             key={i}
@@ -144,7 +144,7 @@ export default function StepIntensity({
               setIntensity(i);
               nextStep();
             }}
-            className={`flex-1 flex items-center justify-center py-3 cursor-pointer bg-neutral-800/70 border border-amber-400/30 text-amber-400 rounded-lg font-semibold transition-all duration-300 transform
+            className={`w-full flex items-center justify-center py-3 cursor-pointer bg-neutral-800/70 border border-amber-400/30 text-amber-400 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 transform
               ${
                 intensity === i
                   ? "bg-amber-500 text-neutral-900 scale-105 shadow-lg"
@@ -157,11 +157,11 @@ export default function StepIntensity({
         ))}
       </div>
 
-      {/* Navigation buttons */}
-      <div ref={navRef} className="flex flex-row gap-3 justify-center">
+      {/* Navigation button */}
+      <div ref={navRef} className="w-full">
         <Button
           onClick={prevStep}
-          className="flex-1 py-3 bg-neutral-800/70 cursor-pointer text-amber-400 rounded-lg border border-amber-400/30 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md transition-all duration-300"
+          className="w-full py-3 bg-neutral-800/70 cursor-pointer text-amber-400 rounded-lg border border-amber-400/30 hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 hover:shadow-md transition-all duration-300"
         >
           <ChevronLeft />
           Previous
