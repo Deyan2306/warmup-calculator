@@ -26,6 +26,9 @@ export default function WarmupCalculatorGuided() {
   const cardRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
 
+  const summaryMobileRef = useRef<HTMLDivElement>(null);
+  const summaryDesktopRef = useRef<HTMLDivElement>(null);
+
   const MAX_FREE_TOKENS = 3;
 
   const [confirmMethod, setConfirmMethod] = useState<WarmupMethod | null>(null);
@@ -84,6 +87,20 @@ export default function WarmupCalculatorGuided() {
     );
   }, [step]);
 
+  useEffect(() => {
+    const animate = (el: HTMLDivElement | null) => {
+      if (!el) return;
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
+      );
+    };
+
+    animate(summaryMobileRef.current);
+    animate(summaryDesktopRef.current);
+  }, [step]);
+
   function getSuggestedMethods(reps: number): WarmupMethod[] {
     const suggested: WarmupMethod[] = [];
     if (reps >= 10) suggested.push("pyramid", "volumeRamp");
@@ -138,7 +155,7 @@ export default function WarmupCalculatorGuided() {
             <Image
               width={86}
               height={86}
-              src="/pumped-up-logo.webp"
+              src="/pumped-up-logo.png"
               alt="Pumped Up Logo"
               className="h-full w-auto"
               priority
@@ -235,7 +252,7 @@ export default function WarmupCalculatorGuided() {
 
         {/* Summary below card on mobile */}
         {step !== 6 && (
-          <div className="xl:hidden mt-6 w-full">
+          <div className="xl:hidden mt-6 w-full" ref={summaryMobileRef}>
             <SelectionsSummary
               lift={lift}
               oneRMs={oneRMs}
@@ -250,7 +267,10 @@ export default function WarmupCalculatorGuided() {
 
       {/* Summary top-left on desktop */}
       {step !== 6 && (
-        <div className="hidden xl:block absolute top-20 left-4 w-[300px] max-w-[90vw]">
+        <div
+          className="hidden xl:block absolute top-20 left-4 w-[300px] max-w-[90vw]"
+          ref={summaryDesktopRef}
+        >
           <SelectionsSummary
             lift={lift}
             oneRMs={oneRMs}
