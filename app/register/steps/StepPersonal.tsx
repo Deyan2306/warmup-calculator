@@ -23,11 +23,14 @@ export default function StepPersonal({
   next,
 }: StepPersonalProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const [subStep, setSubStep] = useState(0);
   const [searchCountry, setSearchCountry] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [highlightIndex, setHighlightIndex] = useState(0);
 
-  const countries = countryList().getData(); // [{ label: "Bulgaria", value: "BG" }, ...]
+  const countries = countryList().getData();
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -51,13 +54,41 @@ export default function StepPersonal({
 
   const selectedCountry = countries.find((c) => c.label === data.nationality);
 
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (!showDropdown) return;
+      const filtered = countries.filter((c) =>
+        c.label.toLowerCase().includes(searchCountry.toLowerCase())
+      );
+      if (e.key === "ArrowDown") {
+        setHighlightIndex((prev) => (prev + 1) % filtered.length);
+      }
+      if (e.key === "ArrowUp") {
+        setHighlightIndex(
+          (prev) => (prev - 1 + filtered.length) % filtered.length
+        );
+      }
+      if (e.key === "Enter") {
+        handleSelectCountry(filtered[highlightIndex]);
+      }
+      if (e.key === "Escape") setShowDropdown(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [showDropdown, searchCountry, highlightIndex]);
+
+  const filteredCountries = countries.filter((c) =>
+    c.label.toLowerCase().includes(searchCountry.toLowerCase())
+  );
+
   return (
     <div className="space-y-6" ref={containerRef}>
       {/* First Name */}
       {subStep === 0 && (
         <div className="space-y-3">
           <p className="text-neutral-300 font-semibold text-lg text-center">
-            What’s your first name?
+            We need to know your first name
           </p>
           <Input
             placeholder="First Name"
@@ -83,7 +114,7 @@ export default function StepPersonal({
       {subStep === 1 && (
         <div className="space-y-3">
           <p className="text-neutral-300 font-semibold text-lg text-center">
-            What’s your surname?
+            And your surname, please
           </p>
           <Input
             placeholder="Surname"
@@ -117,17 +148,17 @@ export default function StepPersonal({
       {subStep === 2 && (
         <div className="space-y-3 relative">
           <p className="text-neutral-300 font-semibold text-lg text-center">
-            Select your nationality
+            Which country are you from?
           </p>
 
-          {/* Input with flag */}
-          <div className="relative">
+          {/* Input with big flag */}
+          <div className="relative flex items-center">
             {selectedCountry && (
-              <div className="absolute left-2 top-1/2 -translate-y-1/2 flex items-center">
+              <div className="absolute left-0 top-0 bottom-0 flex items-center px-2">
                 <Image
-                  src={`https://flagcdn.com/h20/${selectedCountry.value.toLowerCase()}.png`}
-                  width={20}
-                  height={15}
+                  src={`https://flagcdn.com/h40/${selectedCountry.value.toLowerCase()}.png`}
+                  width={40}
+                  height={40}
                   alt={selectedCountry.label}
                   className="object-cover rounded-sm"
                 />
@@ -140,24 +171,25 @@ export default function StepPersonal({
               onChange={(e) => {
                 setSearchCountry(e.target.value);
                 setShowDropdown(true);
+                setHighlightIndex(0);
               }}
-              className={`bg-neutral-800/60 border border-amber-400/40 text-amber-100 placeholder-neutral-500 focus:border-amber-400 pr-10 ${
-                selectedCountry ? "pl-10" : ""
-              }`}
+              className={`bg-neutral-800/60 border border-amber-400/40 text-amber-100 placeholder-neutral-500 focus:border-amber-400 pl-44`}
             />
           </div>
 
           {/* Dropdown */}
           {showDropdown && (
-            <div className="absolute z-10 w-full bg-neutral-800/95 max-h-52 overflow-y-auto mt-1 rounded-lg border border-amber-400/30 shadow-lg">
-              {countries
-                .filter((c) =>
-                  c.label.toLowerCase().includes(searchCountry.toLowerCase())
-                )
-                .map((country) => (
+            <div
+              ref={dropdownRef}
+              className="absolute z-10 w-full bg-neutral-800/95 max-h-52 overflow-y-auto mt-1 rounded-lg border border-amber-400/30 shadow-lg"
+            >
+              {filteredCountries.length > 0 ? (
+                filteredCountries.map((country, index) => (
                   <div
                     key={country.value}
-                    className="flex items-center gap-2 p-2 cursor-pointer hover:bg-amber-500/20"
+                    className={`flex items-center gap-2 p-2 cursor-pointer transition-colors ${
+                      index === highlightIndex ? "bg-amber-500/20" : ""
+                    } hover:bg-amber-500/20`}
                     onClick={() => handleSelectCountry(country)}
                   >
                     <Image
@@ -167,9 +199,21 @@ export default function StepPersonal({
                       alt={country.label}
                       className="object-cover rounded-sm"
                     />
-                    <span className="text-neutral-100">{country.label}</span>
+                    <span
+                      className="text-neutral-100"
+                      dangerouslySetInnerHTML={{
+                        __html: country.label.replace(
+                          new RegExp(searchCountry, "gi"),
+                          (match) =>
+                            `<mark class="bg-amber-400/30 rounded">${match}</mark>`
+                        ),
+                      }}
+                    />
                   </div>
-                ))}
+                ))
+              ) : (
+                <div className="p-2 text-neutral-500">No results found</div>
+              )}
             </div>
           )}
 
