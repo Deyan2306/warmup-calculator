@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { gsap } from "gsap";
 import Image from "next/image";
 import countryList from "react-select-country-list";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface StepPersonalProps {
   data: {
@@ -110,6 +111,7 @@ export default function StepPersonal({
             `}
           >
             Next
+            <ChevronRight />
           </Button>
         </div>
       )}
@@ -138,6 +140,7 @@ export default function StepPersonal({
               onClick={() => setSubStep(0)}
               className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
             >
+              <ChevronLeft />
               Back
             </Button>
             <Button
@@ -155,6 +158,7 @@ export default function StepPersonal({
               `}
             >
               Next
+              <ChevronRight />
             </Button>
           </div>
         </div>
@@ -242,6 +246,7 @@ export default function StepPersonal({
               onClick={() => setSubStep(1)}
               className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
             >
+              <ChevronLeft />
               Back
             </Button>
             <Button
@@ -259,6 +264,7 @@ export default function StepPersonal({
               `}
             >
               Continue
+              <ChevronRight />
             </Button>
           </div>
         </div>

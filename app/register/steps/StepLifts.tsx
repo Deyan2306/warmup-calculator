@@ -5,7 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { gsap } from "gsap";
 import Image from "next/image";
-import { User, User2, Dumbbell, Star } from "lucide-react";
+import {
+  User,
+  User2,
+  Dumbbell,
+  Star,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 type LiftType = "squat" | "bench" | "deadlift";
 
@@ -111,6 +118,7 @@ export default function StepLifts({
                 onClick={back}
                 className={`${buttonClass} bg-neutral-800/70 text-amber-400`}
               >
+                <ChevronLeft />
                 Back
               </Button>
               <Button
@@ -123,6 +131,7 @@ export default function StepLifts({
                 }`}
               >
                 Next
+                <ChevronRight />
               </Button>
             </div>
           </div>
@@ -167,6 +176,7 @@ export default function StepLifts({
                 onClick={() => setSubStep(0)}
                 className={`${buttonClass} bg-neutral-800/70 text-amber-400`}
               >
+                <ChevronLeft />
                 Back
               </Button>
             </div>
@@ -223,6 +233,7 @@ export default function StepLifts({
                 onClick={() => setSubStep(subStep - 1)}
                 className={`${buttonClass} bg-neutral-800/70 text-amber-400`}
               >
+                <ChevronLeft />
                 Back
               </Button>
               <Button

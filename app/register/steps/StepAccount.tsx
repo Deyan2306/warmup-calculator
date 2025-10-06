@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { gsap } from "gsap";
-import { Eye, EyeOff } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, EyeOff } from "lucide-react";
 
 interface StepAccountProps {
   data: {
@@ -96,6 +96,7 @@ export default function StepAccount({
               onClick={back}
               className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
             >
+              <ChevronLeft />
               Back
             </Button>
             <Button
@@ -113,6 +114,7 @@ export default function StepAccount({
               `}
             >
               Next
+              <ChevronRight />
             </Button>
           </div>
         </div>
@@ -150,6 +152,7 @@ export default function StepAccount({
               onClick={() => setSubStep(0)}
               className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
             >
+              <ChevronLeft />
               Back
             </Button>
             <Button
@@ -167,6 +170,7 @@ export default function StepAccount({
               `}
             >
               Continue
+              <ChevronRight />
             </Button>
           </div>
         </div>
