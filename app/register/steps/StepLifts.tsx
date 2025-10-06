@@ -77,8 +77,11 @@ export default function StepLifts({
     &[type="number"]:appearance-textfield
   `;
 
-  const buttonClass =
-    "flex-1 py-3 rounded-xl font-semibold cursor-pointer transition-all duration-300";
+  const buttonClass = `
+    flex-1 py-3 rounded-lg border border-amber-400/50
+    transition-all duration-300 hover:scale-105 hover:shadow-lg
+    cursor-pointer
+  `;
 
   const currentLift = subStep >= 2 ? lifts[subStep - 2] : null;
 
@@ -91,7 +94,7 @@ export default function StepLifts({
         {/* Step 0: Bodyweight */}
         {subStep === 0 && (
           <div className="space-y-3 p-6 bg-neutral-900/80 rounded-2xl">
-            <p className="text-neutral-300 font-semibold text-lg text-center">
+            <p className="text-neutral-400 font-semibold text-lg text-center">
               What's your body weight?
             </p>
             <Input
@@ -106,7 +109,7 @@ export default function StepLifts({
             <div className="flex gap-3 mt-3">
               <Button
                 onClick={back}
-                className={`${buttonClass} bg-neutral-800/60 text-amber-300 hover:bg-neutral-700 hover:text-amber-200`}
+                className={`${buttonClass} bg-neutral-800/70 text-amber-400`}
               >
                 Back
               </Button>
@@ -115,7 +118,7 @@ export default function StepLifts({
                 onClick={() => setSubStep(1)}
                 className={`${buttonClass} ${
                   data.bodyWeight
-                    ? "bg-amber-500 text-neutral-900 hover:bg-amber-400"
+                    ? "bg-amber-500 text-neutral-900 hover:text-amber-400"
                     : "bg-neutral-800/60 text-neutral-600"
                 }`}
               >
@@ -128,7 +131,7 @@ export default function StepLifts({
         {/* Step 1: Gender */}
         {subStep === 1 && (
           <div className="space-y-3 p-6 bg-neutral-900/80 rounded-2xl">
-            <p className="text-neutral-300 font-semibold text-lg text-center">
+            <p className="text-neutral-400 font-semibold text-lg text-center">
               Select your gender
             </p>
             <div className="flex gap-4 justify-center mt-4">
@@ -137,10 +140,10 @@ export default function StepLifts({
                   setData({ ...data, gender: "male" });
                   setSubStep(2);
                 }}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold cursor-pointer transition-all duration-300 ${
+                className={`${buttonClass} flex items-center justify-center gap-2 ${
                   data.gender === "male"
                     ? "bg-amber-500 text-neutral-900"
-                    : "bg-neutral-800/60 text-amber-300 hover:bg-amber-500/20 hover:text-amber-200"
+                    : "bg-neutral-800/60 text-amber-400"
                 }`}
               >
                 <User size={20} /> Male
@@ -150,10 +153,10 @@ export default function StepLifts({
                   setData({ ...data, gender: "female" });
                   setSubStep(2);
                 }}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold cursor-pointer transition-all duration-300 ${
+                className={`${buttonClass} flex items-center justify-center gap-2 ${
                   data.gender === "female"
                     ? "bg-amber-500 text-neutral-900"
-                    : "bg-neutral-800/60 text-amber-300 hover:bg-amber-500/20 hover:text-amber-200"
+                    : "bg-neutral-800/60 text-amber-400"
                 }`}
               >
                 <User2 size={20} /> Female
@@ -162,7 +165,7 @@ export default function StepLifts({
             <div className="flex gap-3 mt-3">
               <Button
                 onClick={() => setSubStep(0)}
-                className={`${buttonClass} bg-neutral-800/60 text-amber-300 hover:bg-neutral-700 hover:text-amber-200`}
+                className={`${buttonClass} bg-neutral-800/70 text-amber-400`}
               >
                 Back
               </Button>
@@ -173,7 +176,7 @@ export default function StepLifts({
         {/* Step 2+: Lifts */}
         {subStep >= 2 && currentLift && (
           <div className="space-y-6 p-6 bg-neutral-900/80 rounded-2xl">
-            <p className="text-neutral-300 font-semibold text-lg text-center">
+            <p className="text-neutral-400 font-semibold text-lg text-center">
               Enter your {currentLift.label} max
             </p>
             <div className="flex flex-col items-center gap-4 mt-4">
@@ -196,7 +199,6 @@ export default function StepLifts({
                 className={`${inputClass} text-center w-full max-w-xs`}
               />
 
-              {/* Ratio and level display */}
               {data[currentLift.type] > 0 && data.bodyWeight > 0 && (
                 <div className="flex gap-3 mt-2">
                   <div className="flex items-center gap-1 px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full font-semibold shadow-sm">
@@ -219,7 +221,7 @@ export default function StepLifts({
             <div className="flex gap-3 mt-6">
               <Button
                 onClick={() => setSubStep(subStep - 1)}
-                className={`${buttonClass} bg-neutral-800/60 text-amber-300 hover:bg-neutral-700 hover:text-amber-200`}
+                className={`${buttonClass} bg-neutral-800/70 text-amber-400`}
               >
                 Back
               </Button>
@@ -234,7 +236,7 @@ export default function StepLifts({
                 }
                 className={`${buttonClass} ${
                   data[currentLift.type] && data[currentLift.type] > 0
-                    ? "bg-amber-500 text-neutral-900 hover:bg-amber-400"
+                    ? "bg-amber-500 text-neutral-900 hover:text-amber-400"
                     : "bg-neutral-800/60 text-neutral-600"
                 }`}
               >
