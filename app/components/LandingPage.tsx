@@ -13,20 +13,19 @@ export default function LandingPage() {
   const heroTitleRef = useRef<HTMLHeadingElement>(null);
   const heroTextRef = useRef<HTMLParagraphElement>(null);
   const heroLogoRef = useRef<HTMLImageElement>(null);
-  const heroButtonRef = useRef<HTMLButtonElement>(null);
+  const heroTryRef = useRef<HTMLButtonElement>(null);
+  const heroRegisterRef = useRef<HTMLButtonElement>(null);
   const ctaSectionRef = useRef<HTMLDivElement>(null);
   const ctaButtonRef = useRef<HTMLButtonElement>(null);
   const accent1Ref = useRef<HTMLDivElement>(null);
   const accent2Ref = useRef<HTMLDivElement>(null);
 
-  // Simplified ref assignment for notifications
   const addToRefs = (el: HTMLDivElement | null, index: number) => {
     if (el && !notificationsRef.current[index]) {
       notificationsRef.current[index] = el;
     }
   };
 
-  // Simplified ref assignment for features
   const addFeatureRefs = (el: HTMLDivElement | null, index: number) => {
     if (el && !featureRefs.current[index]) {
       featureRefs.current[index] = el;
@@ -44,6 +43,7 @@ export default function LandingPage() {
         { x: 0, opacity: 1, duration: 1, ease: "back.out(1.5)", stagger: 0.1 }
       );
     }
+
     if (heroTextRef.current) {
       tl.fromTo(
         heroTextRef.current,
@@ -52,11 +52,19 @@ export default function LandingPage() {
         "-=0.5"
       );
     }
-    if (heroButtonRef.current) {
+
+    // Animate both hero buttons
+    if (heroTryRef.current && heroRegisterRef.current) {
       tl.fromTo(
-        heroButtonRef.current,
+        [heroTryRef.current, heroRegisterRef.current],
         { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.7)" },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+          stagger: 0.15,
+        },
         "-=0.3"
       );
     }
@@ -178,13 +186,22 @@ export default function LandingPage() {
             you lift smarter, faster, and safer.
           </p>
 
-          <div className="w-full flex justify-center md:justify-start">
+          {/* Hero Buttons */}
+          <div className="w-full flex flex-col md:flex-row justify-center md:justify-start gap-4">
             <Link href="/create-warmup">
               <Button
-                ref={heroButtonRef}
+                ref={heroTryRef}
                 className="px-12 py-5 bg-amber-400 text-neutral-900 font-bold rounded-3xl hover:bg-amber-500 transform hover:cursor-pointer hover:scale-105 transition shadow-lg"
               >
-                Get Started
+                Try It Out
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button
+                ref={heroRegisterRef}
+                className="px-12 py-5 bg-neutral-800 text-amber-400 font-bold rounded-3xl border border-amber-400 hover:bg-amber-400 hover:text-neutral-900 transform hover:cursor-pointer hover:scale-105 transition shadow-lg"
+              >
+                Create Account
               </Button>
             </Link>
           </div>
@@ -309,14 +326,23 @@ export default function LandingPage() {
           Elite lifters don’t guess. They prepare. PreppedUp AI gives you the
           edge — every session, every lift.
         </p>
-        <Link href="/create-warmup">
-          <Button
-            ref={ctaButtonRef}
-            className="px-16 py-5 bg-gradient-to-r from-amber-400 to-amber-500 text-neutral-900 hover:cursor-pointer font-bold rounded-full hover:scale-105 transform transition shadow-xl"
-          >
-            Create My Warm-up
-          </Button>
-        </Link>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-col md:flex-row gap-4">
+          <Link href="/create-warmup">
+            <Button
+              ref={ctaButtonRef}
+              className="px-16 py-5 bg-gradient-to-r from-amber-400 to-amber-500 text-neutral-900 hover:cursor-pointer font-bold rounded-full hover:scale-105 transform transition shadow-xl"
+            >
+              Try It Out
+            </Button>
+          </Link>
+          <Link href="/register">
+            <Button className="px-16 py-5 bg-neutral-800 text-amber-400 font-bold rounded-full border border-amber-400 hover:bg-amber-400 hover:text-neutral-900 transform hover:cursor-pointer hover:scale-105 transition shadow-xl">
+              Create Account
+            </Button>
+          </Link>
+        </div>
       </section>
     </div>
   );
