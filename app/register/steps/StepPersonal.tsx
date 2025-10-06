@@ -9,8 +9,8 @@ import countryList from "react-select-country-list";
 
 interface StepPersonalProps {
   data: {
-    name: string;
-    surname: string;
+    username: string;
+    email: string;
     nationality: string;
   };
   setData: (d: any) => void;
@@ -31,6 +31,10 @@ export default function StepPersonal({
   const [highlightIndex, setHighlightIndex] = useState(0);
 
   const countries = countryList().getData();
+  const selectedCountry = countries.find((c) => c.label === data.nationality);
+  const filteredCountries = countries.filter((c) =>
+    c.label.toLowerCase().includes(searchCountry.toLowerCase())
+  );
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -52,91 +56,103 @@ export default function StepPersonal({
     setShowDropdown(false);
   };
 
-  const selectedCountry = countries.find((c) => c.label === data.nationality);
-
   // Keyboard navigation
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (!showDropdown) return;
-      const filtered = countries.filter((c) =>
-        c.label.toLowerCase().includes(searchCountry.toLowerCase())
-      );
-      if (e.key === "ArrowDown") {
-        setHighlightIndex((prev) => (prev + 1) % filtered.length);
-      }
-      if (e.key === "ArrowUp") {
+      if (e.key === "ArrowDown")
+        setHighlightIndex((prev) => (prev + 1) % filteredCountries.length);
+      if (e.key === "ArrowUp")
         setHighlightIndex(
-          (prev) => (prev - 1 + filtered.length) % filtered.length
+          (prev) =>
+            (prev - 1 + filteredCountries.length) % filteredCountries.length
         );
-      }
-      if (e.key === "Enter") {
-        handleSelectCountry(filtered[highlightIndex]);
-      }
+      if (e.key === "Enter")
+        handleSelectCountry(filteredCountries[highlightIndex]);
       if (e.key === "Escape") setShowDropdown(false);
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [showDropdown, searchCountry, highlightIndex]);
 
-  const filteredCountries = countries.filter((c) =>
-    c.label.toLowerCase().includes(searchCountry.toLowerCase())
-  );
-
   return (
-    <div className="space-y-6" ref={containerRef}>
-      {/* First Name */}
+    <div className="space-y-4" ref={containerRef}>
+      {/* Step 0: Username */}
       {subStep === 0 && (
-        <div className="space-y-3">
-          <p className="text-neutral-300 font-semibold text-lg text-center">
-            We need to know your first name
+        <div className="space-y-3 step-one-child">
+          <p className="text-neutral-400 font-semibold text-lg text-center">
+            Choose a username
           </p>
           <Input
-            placeholder="First Name"
-            value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
-            className="bg-neutral-800/60 border border-amber-400/40 text-amber-100 placeholder-neutral-500 focus:border-amber-400"
+            placeholder="Username"
+            value={data.username}
+            onChange={(e) => setData({ ...data, username: e.target.value })}
+            className="
+              bg-neutral-800 text-amber-400 border border-amber-400
+              rounded-lg px-3 py-3
+              focus:ring-2 focus:ring-amber-400
+              transition-all duration-300
+              hover:scale-105 hover:shadow-md
+            "
           />
           <Button
-            disabled={data.name.trim().length < 2}
             onClick={() => setSubStep(1)}
-            className={`w-full py-3 rounded-xl cursor-pointer font-semibold ${
-              data.name.trim().length >= 2
-                ? "bg-amber-500 text-neutral-900 hover:bg-amber-400"
-                : "bg-neutral-800/60 text-neutral-600 cursor-not-allowed"
-            }`}
+            disabled={data.username.trim().length < 3}
+            className={`
+              w-full py-3 rounded-lg border border-amber-400/50
+              transition-all duration-300 hover:scale-105 hover:shadow-lg
+              ${
+                data.username.trim().length >= 3
+                  ? "bg-amber-500 text-neutral-900 hover:text-amber-400"
+                  : "bg-neutral-800/60 text-neutral-600"
+              }
+              cursor-pointer
+            `}
           >
             Next
           </Button>
         </div>
       )}
 
-      {/* Surname */}
+      {/* Step 1: Email */}
       {subStep === 1 && (
-        <div className="space-y-3">
-          <p className="text-neutral-300 font-semibold text-lg text-center">
-            And your surname, please
+        <div className="space-y-3 step-one-child">
+          <p className="text-neutral-400 font-semibold text-lg text-center">
+            Enter your email
           </p>
           <Input
-            placeholder="Surname"
-            value={data.surname}
-            onChange={(e) => setData({ ...data, surname: e.target.value })}
-            className="bg-neutral-800/60 border border-amber-400/40 text-amber-100 placeholder-neutral-500 focus:border-amber-400"
+            type="email"
+            placeholder="Email"
+            value={data.email}
+            onChange={(e) => setData({ ...data, email: e.target.value })}
+            className="
+              bg-neutral-800 text-amber-400 border border-amber-400
+              rounded-lg px-3 py-3
+              focus:ring-2 focus:ring-amber-400
+              transition-all duration-300
+              hover:scale-105 hover:shadow-md
+            "
           />
           <div className="flex gap-3">
             <Button
               onClick={() => setSubStep(0)}
-              className="flex-1 py-3 rounded-xl bg-neutral-800/60 text-amber-300 border border-amber-400/40 hover:bg-neutral-700 hover:text-amber-200"
+              className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
             >
               Back
             </Button>
             <Button
-              disabled={data.surname.trim().length < 2}
               onClick={() => setSubStep(2)}
-              className={`flex-1 py-3 rounded-xl cursor-pointer font-semibold ${
-                data.surname.trim().length >= 2
-                  ? "bg-amber-500 text-neutral-900 hover:bg-amber-400"
-                  : "bg-neutral-800/60 text-neutral-600 cursor-not-allowed"
-              }`}
+              disabled={!data.email.includes("@")}
+              className={`
+                flex-1 py-3 rounded-lg border border-amber-400/50
+                transition-all duration-300 hover:scale-105 hover:shadow-lg
+                ${
+                  data.email.includes("@")
+                    ? "bg-amber-500 text-neutral-900 hover:text-amber-400"
+                    : "bg-neutral-800/60 text-neutral-600"
+                }
+                cursor-pointer
+              `}
             >
               Next
             </Button>
@@ -144,14 +160,13 @@ export default function StepPersonal({
         </div>
       )}
 
-      {/* Nationality */}
+      {/* Step 2: Nationality */}
       {subStep === 2 && (
-        <div className="space-y-3 relative">
-          <p className="text-neutral-300 font-semibold text-lg text-center">
+        <div className="space-y-3 relative step-one-child">
+          <p className="text-neutral-400 font-semibold text-lg text-center">
             Which country are you from?
           </p>
 
-          {/* Input with big flag */}
           <div className="relative flex items-center">
             {selectedCountry && (
               <div className="absolute left-0 top-0 bottom-0 flex items-center px-2">
@@ -173,11 +188,16 @@ export default function StepPersonal({
                 setShowDropdown(true);
                 setHighlightIndex(0);
               }}
-              className={`bg-neutral-800/60 border border-amber-400/40 text-amber-100 placeholder-neutral-500 focus:border-amber-400 pl-44`}
+              className="
+                bg-neutral-800 text-amber-400 border border-amber-400
+                rounded-lg px-3 py-3 pl-44
+                focus:ring-2 focus:ring-amber-400
+                transition-all duration-300
+                hover:scale-105 hover:shadow-md
+              "
             />
           </div>
 
-          {/* Dropdown */}
           {showDropdown && (
             <div
               ref={dropdownRef}
@@ -220,18 +240,23 @@ export default function StepPersonal({
           <div className="flex gap-3 mt-3">
             <Button
               onClick={() => setSubStep(1)}
-              className="flex-1 py-3 rounded-xl bg-neutral-800/60 text-amber-300 border border-amber-400/40 hover:bg-neutral-700 hover:text-amber-200"
+              className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
             >
               Back
             </Button>
             <Button
-              disabled={!data.nationality}
               onClick={next}
-              className={`flex-1 py-3 cursor-pointer rounded-xl font-semibold ${
-                data.nationality
-                  ? "bg-amber-500 text-neutral-900 hover:bg-amber-400"
-                  : "bg-neutral-800/60 text-neutral-600 cursor-not-allowed"
-              }`}
+              disabled={!data.nationality}
+              className={`
+                flex-1 py-3 rounded-lg border border-amber-400/50
+                transition-all duration-300 hover:scale-105 hover:shadow-lg
+                ${
+                  data.nationality
+                    ? "bg-amber-500 text-neutral-900 hover:text-amber-400"
+                    : "bg-neutral-800/60 text-neutral-600"
+                }
+                cursor-pointer
+              `}
             >
               Continue
             </Button>

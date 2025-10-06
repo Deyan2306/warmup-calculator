@@ -8,8 +8,6 @@ import { Eye, EyeOff } from "lucide-react";
 
 interface StepAccountProps {
   data: {
-    username: string;
-    email: string;
     password: string;
     confirmPassword: string;
   };
@@ -54,76 +52,20 @@ export default function StepAccount({
   };
   const strength = getPasswordStrength();
 
-  const inputClass =
-    "bg-neutral-800/60 text-amber-100 placeholder-neutral-500 focus:border-amber-400 focus:ring-1 focus:ring-amber-400";
+  const inputClass = `
+    bg-neutral-800 text-amber-400 border border-amber-400
+    rounded-lg px-3 py-3 pr-10
+    focus:ring-2 focus:ring-amber-400
+    transition-all duration-300
+    hover:scale-105 hover:shadow-md
+  `;
 
   return (
-    <div className="space-y-6" ref={containerRef}>
-      {/* Username Card */}
+    <div className="space-y-4" ref={containerRef}>
+      {/* Password */}
       {subStep === 0 && (
-        <div className="space-y-3 p-6 bg-neutral-900/80 rounded-2xl">
-          <p className="text-neutral-300 font-semibold text-lg text-center">
-            We need your username
-          </p>
-          <Input
-            placeholder="Username"
-            value={data.username}
-            onChange={(e) => setData({ ...data, username: e.target.value })}
-            className={inputClass}
-          />
-          <Button
-            disabled={data.username.trim().length < 3}
-            onClick={() => setSubStep(1)}
-            className={`w-full py-3 rounded-xl font-semibold ${
-              data.username.trim().length >= 3
-                ? "bg-amber-500 text-neutral-900 hover:bg-amber-400"
-                : "bg-neutral-800/60 text-neutral-600 cursor-not-allowed"
-            }`}
-          >
-            Next
-          </Button>
-        </div>
-      )}
-
-      {/* Email Card */}
-      {subStep === 1 && (
-        <div className="space-y-3 p-6 bg-neutral-900/80 rounded-2xl">
-          <p className="text-neutral-300 font-semibold text-lg text-center">
-            Your email helps us reach you
-          </p>
-          <Input
-            placeholder="Email"
-            value={data.email}
-            onChange={(e) => setData({ ...data, email: e.target.value })}
-            type="email"
-            className={inputClass}
-          />
-          <div className="flex gap-3">
-            <Button
-              onClick={() => setSubStep(0)}
-              className="flex-1 py-3 rounded-xl bg-neutral-800/60 text-amber-300 hover:bg-neutral-700 hover:text-amber-200"
-            >
-              Back
-            </Button>
-            <Button
-              disabled={!data.email.includes("@")}
-              onClick={() => setSubStep(2)}
-              className={`flex-1 py-3 rounded-xl font-semibold ${
-                data.email.includes("@")
-                  ? "bg-amber-500 text-neutral-900 hover:bg-amber-400"
-                  : "bg-neutral-800/60 text-neutral-600 cursor-not-allowed"
-              }`}
-            >
-              Next
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {/* Password Card */}
-      {subStep === 2 && (
-        <div className="space-y-3 p-6 bg-neutral-900/80 rounded-2xl">
-          <p className="text-neutral-300 font-semibold text-lg text-center">
+        <div className="space-y-3 step-one-child">
+          <p className="text-neutral-400 font-semibold text-lg text-center">
             Choose a strong password
           </p>
           <div className="relative">
@@ -132,7 +74,7 @@ export default function StepAccount({
               value={data.password}
               onChange={(e) => setData({ ...data, password: e.target.value })}
               type={showPassword ? "text" : "password"}
-              className={`${inputClass} pr-10`}
+              className={inputClass}
             />
             <button
               type="button"
@@ -151,19 +93,24 @@ export default function StepAccount({
           )}
           <div className="flex gap-3 mt-3">
             <Button
-              onClick={() => setSubStep(1)}
-              className="flex-1 py-3 rounded-xl bg-neutral-800/60 text-amber-300 hover:bg-neutral-700 hover:text-amber-200"
+              onClick={back}
+              className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
             >
               Back
             </Button>
             <Button
               disabled={data.password.length < 8}
-              onClick={() => setSubStep(3)}
-              className={`flex-1 py-3 rounded-xl font-semibold ${
-                data.password.length >= 8
-                  ? "bg-amber-500 text-neutral-900 hover:bg-amber-400"
-                  : "bg-neutral-800/60 text-neutral-600 cursor-not-allowed"
-              }`}
+              onClick={() => setSubStep(1)}
+              className={`
+                flex-1 py-3 rounded-lg border border-amber-400/50
+                transition-all duration-300 hover:scale-105 hover:shadow-lg
+                ${
+                  data.password.length >= 8
+                    ? "bg-amber-500 text-neutral-900 hover:text-amber-400"
+                    : "bg-neutral-800/60 text-neutral-600"
+                }
+                cursor-pointer
+              `}
             >
               Next
             </Button>
@@ -171,10 +118,10 @@ export default function StepAccount({
         </div>
       )}
 
-      {/* Confirm Password Card */}
-      {subStep === 3 && (
-        <div className="space-y-3 p-6 bg-neutral-900/80 rounded-2xl">
-          <p className="text-neutral-300 font-semibold text-lg text-center">
+      {/* Confirm Password */}
+      {subStep === 1 && (
+        <div className="space-y-3 step-one-child">
+          <p className="text-neutral-400 font-semibold text-lg text-center">
             Confirm your password
           </p>
           <div className="relative">
@@ -185,7 +132,7 @@ export default function StepAccount({
                 setData({ ...data, confirmPassword: e.target.value })
               }
               type={showConfirm ? "text" : "password"}
-              className={`${inputClass} pr-10`}
+              className={inputClass}
             />
             <button
               type="button"
@@ -200,19 +147,24 @@ export default function StepAccount({
           )}
           <div className="flex gap-3 mt-3">
             <Button
-              onClick={() => setSubStep(2)}
-              className="flex-1 py-3 rounded-xl bg-neutral-800/60 text-amber-300 hover:bg-neutral-700 hover:text-amber-200"
+              onClick={() => setSubStep(0)}
+              className="flex-1 py-3 bg-neutral-800/70 text-amber-400 cursor-pointer rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-md"
             >
               Back
             </Button>
             <Button
               disabled={!passwordMatch}
               onClick={next}
-              className={`flex-1 py-3 rounded-xl font-semibold ${
-                passwordMatch
-                  ? "bg-amber-500 text-neutral-900 hover:bg-amber-400"
-                  : "bg-neutral-800/60 text-neutral-600 cursor-not-allowed"
-              }`}
+              className={`
+                flex-1 py-3 rounded-lg border border-amber-400/50
+                transition-all duration-300 hover:scale-105 hover:shadow-lg
+                ${
+                  passwordMatch
+                    ? "bg-amber-500 text-neutral-900 hover:text-amber-400"
+                    : "bg-neutral-800/60 text-neutral-600"
+                }
+                cursor-pointer
+              `}
             >
               Continue
             </Button>
