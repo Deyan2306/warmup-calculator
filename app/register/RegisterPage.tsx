@@ -9,17 +9,29 @@ import StepAccount from "./steps/StepAccount";
 import StepLifts from "./steps/StepLifts";
 import StepReview from "./steps/StepReview";
 
+type FormData = {
+  username: string;
+  email: string;
+  password: string;
+  nationality: string;
+  gender: "male" | "female" | "";
+  bodyWeight: number;
+  squat: number;
+  bench: number;
+  deadlift: number;
+};
+
 export default function RegisterPage() {
   const [step, setStep] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     username: "",
-    name: "",
-    surname: "",
     email: "",
     password: "",
     nationality: "",
+    gender: "",
+    bodyWeight: 0,
     squat: 0,
     bench: 0,
     deadlift: 0,

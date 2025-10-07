@@ -9,7 +9,6 @@ import { ChevronLeft, ChevronRight, Eye, EyeOff } from "lucide-react";
 interface StepAccountProps {
   data: {
     password: string;
-    confirmPassword: string;
   };
   setData: (d: any) => void;
   next: () => void;
@@ -26,6 +25,7 @@ export default function StepAccount({
   const [subStep, setSubStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmInput, setConfirmInput] = useState("");
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -41,7 +41,7 @@ export default function StepAccount({
     return () => ctx.revert();
   }, [subStep]);
 
-  const passwordMatch = data.password && data.password === data.confirmPassword;
+  const passwordMatch = data.password && data.password === confirmInput;
 
   const getPasswordStrength = () => {
     if (data.password.length < 8)
@@ -102,16 +102,11 @@ export default function StepAccount({
             <Button
               disabled={data.password.length < 8}
               onClick={() => setSubStep(1)}
-              className={`
-                flex-1 py-3 rounded-lg border border-amber-400/50
-                transition-all duration-300 hover:scale-105 hover:shadow-lg
-                ${
-                  data.password.length >= 8
-                    ? "bg-amber-500 text-neutral-900 hover:text-amber-400"
-                    : "bg-neutral-800/60 text-neutral-600"
-                }
-                cursor-pointer
-              `}
+              className={`flex-1 py-3 rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                data.password.length >= 8
+                  ? "bg-amber-500 text-neutral-900 hover:text-amber-400"
+                  : "bg-neutral-800/60 text-neutral-600"
+              } cursor-pointer`}
             >
               Next
               <ChevronRight />
@@ -129,10 +124,8 @@ export default function StepAccount({
           <div className="relative">
             <Input
               placeholder="Confirm Password"
-              value={data.confirmPassword}
-              onChange={(e) =>
-                setData({ ...data, confirmPassword: e.target.value })
-              }
+              value={confirmInput}
+              onChange={(e) => setConfirmInput(e.target.value)}
               type={showConfirm ? "text" : "password"}
               className={inputClass}
             />
@@ -144,7 +137,7 @@ export default function StepAccount({
               {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          {!passwordMatch && data.confirmPassword && (
+          {!passwordMatch && confirmInput && (
             <p className="text-red-500 text-sm mt-1">Passwords do not match</p>
           )}
           <div className="flex gap-3 mt-3">
@@ -158,16 +151,11 @@ export default function StepAccount({
             <Button
               disabled={!passwordMatch}
               onClick={next}
-              className={`
-                flex-1 py-3 rounded-lg border border-amber-400/50
-                transition-all duration-300 hover:scale-105 hover:shadow-lg
-                ${
-                  passwordMatch
-                    ? "bg-amber-500 text-neutral-900 hover:text-amber-400"
-                    : "bg-neutral-800/60 text-neutral-600"
-                }
-                cursor-pointer
-              `}
+              className={`flex-1 py-3 rounded-lg border border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                passwordMatch
+                  ? "bg-amber-500 text-neutral-900 hover:text-amber-400"
+                  : "bg-neutral-800/60 text-neutral-600"
+              } cursor-pointer`}
             >
               Continue
               <ChevronRight />
