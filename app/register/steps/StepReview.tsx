@@ -4,8 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { gsap } from "gsap";
 import { toast } from "sonner";
-import { Dumbbell, User, Globe2, Mail, Weight, Star } from "lucide-react";
-import Image from "next/image";
+import { Dumbbell, User, PartyPopper } from "lucide-react";
 
 interface StepReviewProps {
   data: {
@@ -44,14 +43,13 @@ export default function StepReview({ data, back }: StepReviewProps) {
   async function handleRegister() {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3002/api/v1/register", {
+      const res = await fetch("http://localhost:3002/api/v1/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
       if (!res.ok) throw new Error("Registration failed");
-
       toast.success("Registration successful!");
       setSuccess(true);
     } catch (err) {
@@ -62,26 +60,43 @@ export default function StepReview({ data, back }: StepReviewProps) {
     }
   }
 
+  // ✅ SUCCESS STATE
   if (success) {
     return (
-      <div className="flex flex-col items-center justify-center space-y-6 text-center relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-500/10 to-transparent rounded-3xl animate-pulse" />
-        <Image
-          src="/celebrate.webp"
-          width={100}
-          height={100}
-          alt="Success"
-          className="animate-bounce"
-        />
-        <p className="text-amber-400 text-2xl font-extrabold tracking-wide">
-          Welcome aboard, {data.username}!
-        </p>
-        <p className="text-neutral-400 text-sm max-w-sm">
-          Your account has been successfully created. Let’s get stronger 💪
-        </p>
+      <div className="flex flex-col items-center justify-center space-y-6 text-center relative overflow-hidden py-10">
+        {/* Centered Confetti Animation */}
+        <div className="relative flex justify-center items-center w-32 h-32">
+          <PartyPopper
+            size={64}
+            className="text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] animate-bounce"
+          />
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-amber-400 rounded-full opacity-70 animate-ping"
+              style={{
+                top: `${50 + Math.random() * 40 - 20}%`,
+                left: `${50 + Math.random() * 40 - 20}%`,
+                animationDelay: `${i * 0.2}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Text Content */}
+        <div className="space-y-2">
+          <p className="text-amber-400 text-3xl font-extrabold tracking-wide">
+            Welcome aboard, {data.username}!
+          </p>
+          <p className="text-neutral-400 text-sm max-w-sm mx-auto">
+            Your account has been successfully created. Let’s start your
+            strength journey.
+          </p>
+        </div>
+
         <Button
           onClick={() => (window.location.href = "/")}
-          className="bg-amber-500 text-neutral-900 hover:bg-amber-400 px-8 py-3 rounded-xl font-bold transition-all duration-300 hover:scale-105"
+          className="cursor-pointer bg-amber-500 text-neutral-900 hover:bg-amber-400 px-8 py-3 rounded-xl font-bold transition-all duration-300 hover:scale-105 shadow-[0_0_20px_rgba(251,191,36,0.4)]"
         >
           Go to Dashboard
         </Button>
@@ -89,13 +104,11 @@ export default function StepReview({ data, back }: StepReviewProps) {
     );
   }
 
+  // ✅ REVIEW SCREEN
   return (
     <div ref={containerRef} className="relative space-y-8 p-4">
-      {/* Decorative gradient glow */}
-      <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-64 h-64 bg-amber-500/10 blur-3xl rounded-full" />
-
       <h2 className="text-2xl font-extrabold text-center text-amber-400">
-        Review your details ✨
+        Review your details
       </h2>
 
       {/* Info Card */}
@@ -117,7 +130,7 @@ export default function StepReview({ data, back }: StepReviewProps) {
         </div>
       </div>
 
-      {/* Lift Stats */}
+      {/* Lifts */}
       <div className="bg-gradient-to-br from-neutral-900/80 to-neutral-800/60 border border-amber-500/30 rounded-2xl p-6 backdrop-blur-md shadow-inner space-y-5">
         <div className="flex items-center gap-3 text-amber-400 font-semibold text-lg">
           <Dumbbell /> Strength Stats
@@ -146,7 +159,7 @@ export default function StepReview({ data, back }: StepReviewProps) {
         </div>
       </div>
 
-      {/* Actions */}
+      {/* Buttons */}
       <div className="flex gap-4">
         <Button
           onClick={back}
@@ -161,7 +174,7 @@ export default function StepReview({ data, back }: StepReviewProps) {
           className={`flex-1 py-3 rounded-xl font-bold transition-all duration-300 ${
             loading
               ? "bg-neutral-700 text-neutral-400 cursor-not-allowed"
-              : "bg-amber-500 text-neutral-900 hover:bg-amber-400 hover:scale-105 shadow-lg"
+              : "bg-amber-500 text-neutral-900 hover:bg-amber-400 hover:scale-105 shadow-lg cursor-pointer"
           }`}
         >
           {loading ? "Registering..." : "Finish & Join"}
