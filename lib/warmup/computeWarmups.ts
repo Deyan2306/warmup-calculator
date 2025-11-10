@@ -1,4 +1,4 @@
-import { WarmupSet, Lift, Intensity, WarmupMethod } from "./types";
+import { WarmupSet, Lift, Intensity, WarmupMethod } from "@/types";
 import { roundToNearestAvailable } from "./roundToNearestAvailable";
 
 export function computeWarmups({

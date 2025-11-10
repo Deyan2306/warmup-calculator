@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Lift } from "@/lib/warmup/types";
+import { Lift } from "@/types";
 import { gsap } from "gsap";
 import { JSX } from "react";
 import Image from "next/image";

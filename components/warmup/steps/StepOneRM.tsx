@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Lift } from "@/lib/warmup/types";
+import { Lift } from "@/types";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
 import Link from "next/link";
 import { gsap } from "gsap";

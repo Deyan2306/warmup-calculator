@@ -2,15 +2,15 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import WarmupCalculatorGuided from "./WarmupCalculator";
+import { WarmupCalculator } from "@/components/warmup";
+import { MAX_FREE_TOKENS } from "@/constants";
 
 export default function PaymentPage() {
-  const MAX_FREE_WORKOUTS = 3;
   const [tokensUsed, setTokensUsed] = useState(0);
   const [subscribed, setSubscribed] = useState(false);
   const [startedWorkout, setStartedWorkout] = useState(false);
 
-  const tokensLeft = MAX_FREE_WORKOUTS - tokensUsed;
+  const tokensLeft = MAX_FREE_TOKENS - tokensUsed;
 
   const handleStartWorkout = () => {
     if (tokensLeft > 0 || subscribed) {
@@ -19,7 +19,7 @@ export default function PaymentPage() {
     }
   };
 
-  if (startedWorkout) return <WarmupCalculatorGuided />;
+  if (startedWorkout) return <WarmupCalculator />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-900 to-neutral-800 flex flex-col items-center justify-center px-6 relative text-center">
@@ -33,7 +33,7 @@ export default function PaymentPage() {
           Stay PreppedUp
         </h1>
         <p className="text-neutral-300 text-lg sm:text-xl">
-          You have {MAX_FREE_WORKOUTS} free workouts. After that, a subscription
+          You have {MAX_FREE_TOKENS} free workouts. After that, a subscription
           is required to continue generating warm-ups.
         </p>
 
@@ -60,7 +60,7 @@ export default function PaymentPage() {
 
         {tokensLeft === 0 && !subscribed && (
           <p className="text-neutral-400 mt-4">
-            You’ve used all your free workouts. Please subscribe to continue.
+            You've used all your free workouts. Please subscribe to continue.
           </p>
         )}
       </div>

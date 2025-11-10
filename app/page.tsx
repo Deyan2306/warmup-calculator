@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react'
-import LandingPage from './components/LandingPage';
+import LandingPage from '@/components/common/LandingPage';
 
 export const dynamic = "force-dynamic";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Intensity } from "@/lib/warmup/types";
+import { Intensity } from "@/types";
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { Info, Sun, Cloud, Zap, ChevronLeft } from "lucide-react";
 import { gsap } from "gsap";
@@ -27,7 +27,7 @@ export default function StepIntensity({
 
   const intensityInfo: Record<Intensity, string> = {
     light:
-      "Light intensity: You are almost ready for your workout and don’t need a heavy warm-up.",
+      "Light intensity: You are almost ready for your workout and don't need a heavy warm-up.",
     medium:
       "Medium intensity: You feel okay, so a regular warm-up is recommended.",
     heavy:

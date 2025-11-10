@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
-import CalculateOneRepMax from "../components/warmup/steps/CalculateOneRepMax";
-import { Suspense } from "react";
-import Loader from "../components/Loader";
+import React, { Suspense } from "react";
+import { CalculateOneRepMax } from "@/components/warmup";
+import { Loader } from "@/components/common";
 
 export const dynamic = "force-dynamic";
 

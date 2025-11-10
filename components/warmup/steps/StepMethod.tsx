@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { WarmupMethod } from "@/lib/warmup/types";
+import { WarmupMethod } from "@/types";
 import { gsap } from "gsap";
 import { ChevronLeft } from "lucide-react";
 

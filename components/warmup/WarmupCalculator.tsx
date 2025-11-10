@@ -1,163 +1,71 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { gsap } from "gsap";
 import { Toaster } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
-import PaymentPage from "./PaymentPage";
+import PaymentPage from "@/components/common/PaymentPage";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Lift, Intensity, WarmupMethod, WarmupSet } from "@/lib/warmup/types";
-import { computeWarmups } from "@/lib/warmup/computeWarmups";
+import { useWarmupCalculator, useAnimation } from "@/hooks";
+import ConfirmModal from "@/components/common/ConfirmModal";
 
-import StepLift from "./warmup/steps/StepLift";
-import StepOneRM from "./warmup/steps/StepOneRM";
-import StepPlates from "./warmup/steps/StepPlates";
-import StepIntensity from "./warmup/steps/StepIntensity";
-import StepMethod from "./warmup/steps/StepMethod";
-import StepWorkSet from "./warmup/steps/StepWorkSet";
-import StepResult from "./warmup/steps/StepResult";
-import ConfirmModal from "./ConfirmModal";
-import { useSearchParams } from "next/navigation";
-import SelectionsSummary from "./warmup/steps/SelectionSummary";
+import StepLift from "./steps/StepLift";
+import StepOneRM from "./steps/StepOneRM";
+import StepPlates from "./steps/StepPlates";
+import StepIntensity from "./steps/StepIntensity";
+import StepMethod from "./steps/StepMethod";
+import StepWorkSet from "./steps/StepWorkSet";
+import StepResult from "./steps/StepResult";
+import SelectionSummary from "./steps/SelectionSummary";
 
-export default function WarmupCalculatorGuided() {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const searchParams = useSearchParams();
+export default function WarmupCalculator() {
+  const {
+    step,
+    lift,
+    oneRMs,
+    plates,
+    intensity,
+    method,
+    workSets,
+    warmups,
+    tokensUsed,
+    goToPayment,
+    confirmMethod,
+    platesAvailable,
+    totalSteps,
+    progressPercent,
+    setLift,
+    setOneRMs,
+    setPlates,
+    setIntensity,
+    setMethod,
+    setWorkSets,
+    setConfirmMethod,
+    nextStep,
+    prevStep,
+    restart,
+    getSuggestedMethods,
+  } = useWarmupCalculator();
 
-  const summaryMobileRef = useRef<HTMLDivElement>(null);
-  const summaryDesktopRef = useRef<HTMLDivElement>(null);
-
-  const MAX_FREE_TOKENS = 3;
-
-  const [confirmMethod, setConfirmMethod] = useState<WarmupMethod | null>(null);
-  const [tokensUsed, setTokensUsed] = useState(0);
-  const [goToPayment, setGoToPayment] = useState(false);
-  const [step, setStep] = useState(0);
-  const [lift, setLift] = useState<Lift | undefined>(undefined);
-  const [oneRMs, setOneRMs] = useState<Record<Lift, number>>({
-    squat: 0,
-    bench: 0,
-    deadlift: 0,
-  });
-  const [plates, setPlates] = useState<Record<string, boolean>>({
-    p25: false,
-    p20: false,
-    p15: false,
-    p10: false,
-    p5: false,
-    p2_5: false,
-    p1_25: false,
-    p1: false,
-    p_5: false,
-    p_25: false,
-    p_125: false,
-  });
-  const [intensity, setIntensity] = useState<Intensity>();
-  const [method, setMethod] = useState<WarmupMethod | undefined>(undefined);
-  const [workSets, setWorkSets] = useState<{ weight: number; reps: number }[]>([
-    { weight: 0, reps: 0 },
-  ]);
-  const [warmups, setWarmups] = useState<WarmupSet[]>([]);
-
-  const liftParam = searchParams.get("lift") as Lift | null;
-
-  const platesAvailable = Object.entries(plates)
-    .filter(([_, v]) => v)
-    .map(([k]) => Number(k.replace("p", "").replace("_", ".")))
-    .sort((a, b) => a - b);
-
-  const totalSteps = 6;
-  const progressPercent = (step / totalSteps) * 100;
-
-  // Set lift from URL param
-  useEffect(() => {
-    if (liftParam) {
-      setLift(liftParam);
-      setStep(1);
-    }
-  }, [liftParam]);
+  const {
+    cardRef,
+    summaryMobileRef,
+    summaryDesktopRef,
+    animateCard,
+    animateSummary,
+  } = useAnimation();
 
   // Animate card on step change
-  useEffect(() => {
-    if (!cardRef.current) return;
-    gsap.fromTo(
-      cardRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
-    );
-  }, [step]);
+  React.useEffect(() => {
+    animateCard(step);
+  }, [step, animateCard]);
 
   // Animate summary panels
-  useEffect(() => {
-    const animate = (el: HTMLDivElement | null) => {
-      if (!el) return;
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
-      );
-    };
-    animate(summaryMobileRef.current);
-    animate(summaryDesktopRef.current);
-  }, [step]);
-
-  function getSuggestedMethods(reps: number): WarmupMethod[] {
-    const suggested: WarmupMethod[] = [];
-    if (reps >= 10) suggested.push("pyramid", "volumeRamp");
-    else if (reps <= 3) suggested.push("fastRamp", "dynamicRamp");
-    else suggested.push("rpe", "classic");
-    return suggested;
-  }
-
-  function nextStep() {
-    if (tokensUsed >= MAX_FREE_TOKENS) {
-      setGoToPayment(true);
-      return;
-    }
-    if (step < 5) setStep(step + 1);
-  }
-
-  function prevStep() {
-    if (step === 1) {
-      setLift(undefined);
-    }
-
-    if (step === 3) {
-      setIntensity(undefined);
-    }
-
-    if (step > 0) setStep(step - 1);
-  }
-
-  function generateWarmup() {
-    if (!method) return;
-
-    const targetWeightKg = workSets[0]?.weight || 0;
-    const targetReps = workSets[0]?.reps || 0;
-
-    const sets = computeWarmups({
-      targetWeightKg,
-      targetReps,
-      lift: lift ?? undefined,
-      intensity,
-      platesAvailable,
-      method,
-    });
-
-    setWarmups(sets);
-    setStep(6);
-    setTokensUsed(tokensUsed + 1);
-    if (tokensUsed + 1 >= MAX_FREE_TOKENS) setGoToPayment(true);
-  }
-
-  // Automatically generate warmup when method is selected
-  useEffect(() => {
-    if (step === 5 && method) {
-      generateWarmup();
-    }
-  }, [method, step]);
+  React.useEffect(() => {
+    animateSummary();
+  }, [step, animateSummary]);
 
   if (goToPayment) return <PaymentPage />;
 
@@ -261,7 +169,7 @@ export default function WarmupCalculatorGuided() {
                 lift={lift}
                 method={method}
                 warmups={warmups}
-                restart={() => setStep(0)}
+                restart={restart}
               />
             )}
           </CardContent>
@@ -270,7 +178,7 @@ export default function WarmupCalculatorGuided() {
         {/* Mobile Summary */}
         {step !== 6 && (
           <div className="xl:hidden mt-6 w-full" ref={summaryMobileRef}>
-            <SelectionsSummary
+            <SelectionSummary
               lift={lift}
               oneRMs={oneRMs}
               plates={plates}
@@ -288,7 +196,7 @@ export default function WarmupCalculatorGuided() {
           className="hidden xl:block absolute top-20 left-4 w-[300px] max-w-[90vw]"
           ref={summaryDesktopRef}
         >
-          <SelectionsSummary
+          <SelectionSummary
             lift={lift}
             oneRMs={oneRMs}
             plates={plates}

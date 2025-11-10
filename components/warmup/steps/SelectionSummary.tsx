@@ -1,6 +1,6 @@
 "use client";
 
-import { Intensity, Lift, WarmupMethod } from "@/lib/warmup/types";
+import { Intensity, Lift, WarmupMethod } from "@/types";
 import {
   CheckCircle2,
   Circle,

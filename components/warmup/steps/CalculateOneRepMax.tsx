@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Info } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Lift } from "@/lib/warmup/types";
+import { Lift } from "@/types";
 import { gsap } from "gsap";
 
 export default function CalculateOneRepMax() {

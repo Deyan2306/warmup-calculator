@@ -323,7 +323,7 @@ export default function LandingPage() {
           Ready to Lift Smarter?
         </h2>
         <p className="text-amber-200 text-lg md:text-xl max-w-2xl text-center">
-          Elite lifters don’t guess. They prepare. PreppedUp AI gives you the
+          Elite lifters don't guess. They prepare. PreppedUp AI gives you the
           edge — every session, every lift.
         </p>
 

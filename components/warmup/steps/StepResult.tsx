@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { WarmupSet, Lift, WarmupMethod } from "@/lib/warmup/types";
+import { WarmupSet, Lift, WarmupMethod } from "@/types";
 import { formatKg } from "@/lib/warmup/format";
 import Link from "next/link";
 import { Home } from "lucide-react";

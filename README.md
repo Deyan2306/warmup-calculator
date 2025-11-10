@@ -1,100 +1,179 @@
-# <img src="./public/pumped-up-logo.webp" width="36" height="36" style="vertical-align: middle" /> PreppedUp
+# PreppedUp - Powerlifting Warm-up Calculator
 
-**PreppedUp** is your ultimate **Powerlifting Warm-Up Generator**—built to make every training session safer, smarter, and more effective. Whether you’re squatting, benching, or deadlifting, PreppedUp designs a personalized warm-up plan so you can focus on lifting heavy and hitting your PRs.
+A modern, modular Next.js application for generating personalized powerlifting warm-up routines.
 
-This is a **SaaS application** built with modern web tech: **TypeScript, JavaScript, Next.js**, and **shadcn/ui** for a clean, interactive interface. It’s deployed and running smoothly on **Vercel**, so you can get started instantly.
+## 🏗️ Project Structure
 
----
+The project has been restructured into a world-class, modular architecture:
 
-## Features ✨
+```
+warmup-calculator/
+├── app/                          # Next.js App Router pages
+│   ├── create-warmup/           # Warm-up generator page
+│   ├── estimate-one-rep-max/    # 1RM calculator page
+│   ├── home/                    # Dashboard page
+│   ├── login/                   # Authentication pages
+│   ├── register/
+│   ├── globals.css              # Global styles
+│   ├── layout.tsx               # Root layout
+│   └── page.tsx                 # Home page
+├── components/                   # Reusable UI components
+│   ├── ui/                      # Base UI components (shadcn/ui)
+│   ├── warmup/                  # Warm-up specific components
+│   │   └── steps/               # Individual step components
+│   ├── layout/                  # Layout components
+│   ├── forms/                   # Form components
+│   ├── common/                  # Shared components
+│   └── index.ts                 # Component exports
+├── types/                       # TypeScript type definitions
+│   ├── warmup.ts               # Warm-up related types
+│   ├── ui.ts                   # UI component types
+│   ├── common.ts               # Common types
+│   └── index.ts                # Type exports
+├── hooks/                       # Custom React hooks
+│   ├── useWarmupCalculator.ts  # Main calculator logic
+│   ├── useLocalStorage.ts      # Local storage hook
+│   ├── useDebounce.ts          # Debounce hook
+│   ├── useAnimation.ts         # Animation hook
+│   └── index.ts                # Hook exports
+├── utils/                       # Utility functions
+│   ├── format.ts               # Formatting utilities
+│   ├── validation.ts           # Validation utilities
+│   ├── calculations.ts         # Calculation utilities
+│   ├── storage.ts              # Storage utilities
+│   └── index.ts                # Utility exports
+├── constants/                   # Application constants
+│   ├── app.ts                  # App configuration
+│   ├── warmup.ts               # Warm-up constants
+│   ├── ui.ts                   # UI constants
+│   ├── api.ts                  # API constants
+│   └── index.ts                # Constant exports
+├── lib/                        # Library code
+│   ├── warmup/                 # Warm-up calculation logic
+│   └── utils.ts                # Utility functions
+├── public/                     # Static assets
+├── tailwind.config.ts          # Tailwind configuration
+├── tsconfig.json               # TypeScript configuration
+└── package.json                # Dependencies
+```
 
-- **Step-by-step warm-up generator** for Squat, Bench, and Deadlift
-- **Dynamic intensity selection** to match your session goals
-- **Custom plate selection** for exact warm-up calculations
-- **One-rep max input** to personalize your warm-up load
-- **Interactive, animated UI** powered by GSAP and shadcn/ui
-- **Mobile and desktop-friendly design**
-- **Freemium tokens system** for limited free warm-ups
+## 🚀 Features
 
----
+- **Modular Architecture**: Clean separation of concerns with organized folders
+- **Type Safety**: Comprehensive TypeScript types for all components and functions
+- **Custom Hooks**: Reusable logic for state management and animations
+- **Design System**: Consistent Tailwind configuration with custom utilities
+- **Component Library**: Organized UI components with proper exports
+- **Constants Management**: Centralized configuration and constants
+- **Utility Functions**: Reusable helper functions for common operations
 
-## Tech Stack 🛠️
+## 🛠️ Technology Stack
 
-PreppedUp leverages modern, high-performance technologies for both front-end and back-end development:
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS with custom configuration
+- **UI Components**: shadcn/ui components
+- **Animations**: GSAP for smooth animations
+- **Icons**: Lucide React
+- **State Management**: React hooks with custom logic
 
-- **Frontend**
+## 📦 Key Components
 
-  - **Next.js** – Fast React framework with server-side rendering
-  - **React** – Component-based UI
-  - **TypeScript** – Type-safe, maintainable code
-  - **JavaScript** – Client-side interactivity
-  - **shadcn/ui** – Accessible and customizable UI components
-  - **GSAP** – Smooth, performant animations
+### Warm-up Calculator
+- Multi-step wizard for generating warm-up routines
+- Support for different lifts (squat, bench, deadlift)
+- Multiple warm-up methods (classic, RPE, pyramid, etc.)
+- Plate availability configuration
+- Intensity level selection
 
-- **Backend & Deployment**
+### One Rep Max Calculator
+- Brzycki and Lombardi formulas
+- Support for different rep ranges
+- Integration with warm-up generator
 
-  - **Next.js API routes** – Lightweight serverless backend
-  - **Vercel** – Hosting and continuous deployment
+### Dashboard
+- User statistics and progress tracking
+- Workout history visualization
+- Performance analytics
 
-- **Assets & Media**
+## 🎨 Design System
 
-  - **pumped-up-logo.webp** – App icon
-  - **TailwindCSS** – Utility-first styling
+The project includes a comprehensive Tailwind configuration with:
 
----
+- **Custom Colors**: Brand colors, powerlifting-specific colors, status colors
+- **Typography**: Custom font sizes and line heights
+- **Spacing**: Extended spacing scale
+- **Animations**: Custom keyframes and animation utilities
+- **Components**: Pre-built component classes for common patterns
 
-## Getting Started 🚀
+## 🔧 Development
 
-Clone the repo and install dependencies:
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
 
+### Installation
 ```bash
-git clone https://github.com/your-username/preppedup.git
-cd preppedup
 npm install
 ```
 
-Run the development server:
-
+### Development Server
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the app in action.
-
----
-
-## Deployment 🌐
-
-PreppedUp is deployed on **Vercel**. You can access it instantly at:
-
-```
-https://preppedup.vercel.app
+### Build
+```bash
+npm run build
 ```
 
----
+### Linting
+```bash
+npm run lint
+```
 
-## Contributing 🤝
+## 📁 Folder Guidelines
 
-Want to help make PreppedUp even better? Contributions are welcome!
+### Components
+- Place reusable UI components in `components/ui/`
+- Feature-specific components in their respective folders
+- Use index.ts files for clean exports
+- Follow the component naming convention
 
-1. Fork the repository
-2. Create a new branch: `git checkout -b feature/YourFeature`
-3. Make your changes and commit: `git commit -m 'Add some feature'`
-4. Push to your branch: `git push origin feature/YourFeature`
-5. Open a Pull Request
+### Types
+- Define types in the `types/` folder
+- Group related types in separate files
+- Export all types through index.ts
 
----
+### Hooks
+- Custom hooks in the `hooks/` folder
+- One hook per file
+- Include proper TypeScript types
 
-## License 📝
+### Utils
+- Pure functions in the `utils/` folder
+- Group by functionality
+- Include JSDoc comments for complex functions
 
-PreppedUp is **MIT licensed**. See `LICENSE` for details.
+### Constants
+- Application constants in the `constants/` folder
+- Group by domain (app, warmup, ui, api)
+- Use const assertions for type safety
 
----
+## 🎯 Best Practices
 
-## Screenshots 📸
+1. **Import Organization**: Use the centralized exports from index.ts files
+2. **Type Safety**: Always define proper TypeScript types
+3. **Component Structure**: Follow the established component patterns
+4. **Styling**: Use the custom Tailwind utilities and design system
+5. **State Management**: Use custom hooks for complex state logic
+6. **Constants**: Use the centralized constants instead of magic numbers/strings
 
-![PreppedUp Screenshot](./public/pumped-up-logo.webp)
+## 🚀 Getting Started
 
----
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-> PreppedUp is designed to make **your preparation as awesome as your lifts**. Never skip your warm-up again! 💪🔥
+The application is now ready for development with a clean, modular architecture that's easy to maintain and extend!
